@@ -20,6 +20,17 @@ git add .
 # Displays the files you are commiting and Checks with user to make sure commit looks right.
 git status
 
+    echo -n "Change this line? (y/n)"
+    read Useranswer
+    if [ $Useranswer = y ]; then
+        echo -n "Please type any string:"
+        read Firststring
+        # insert new value into array
+        thearray[$item]=$Firststring
+    elif [ $Useranswer = n ]; then
+        # not sure what to write here to resume 
+        :
+    fi
 # Asks user to confirm that the commit looks right and if it does push any key to push it to the branch that the suppiled in the command line when running the script
 
 pause
