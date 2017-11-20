@@ -53,15 +53,15 @@
 #!/bin/env bash
 
 commitcheck() {
+#asks the user if the commit looks right and until Y or y is entered it will not push the commit but as you to enter the file you wish to remove from the commit
 echo -n "If your commit looks right press any key to continue, if not press N/n to choose a file to remove from the commit: "
-	#read is the same thing basically as gets in ruby Ie: ask for user input and stores the answer to be used in the variable name 
+#read is the same thing basically as gets in ruby Ie: ask for user input and stores the answer to be used in the variable name 
 read Useranswer
 }
 # adds all the changed files to the commit
 git add .
 ## Displays the files you are commiting to show user the commit and make sure it looks right and all files should be committed.
 git status
-#asks the user if the commit looks right and until Y or y is entered it will not push the commit but as you to enter the file you wish to remove from the commit
 commitcheck
 while [ "$Useranswer" == n ] || [ "$Useranswer" == N ] ;
 do
