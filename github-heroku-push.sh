@@ -1,32 +1,70 @@
-#!/bin/bash
-#This script will push to GitHub and Heroku saving you time from having to manually push to both or to actually have to go to heroku to push you changed code each time.
+##!/bin/bash
+##This script will push to GitHub and Heroku saving you time from having to manually push to both or to actually have to go to heroku to push you changed code each time.
+#
+## $ ./github-push.sh 'First Argument(Your commit message Put within quotes so you can put spaces ir else it will think every word seperated by spaces is a new agrument)' Second-Agrument(Ie: origin) Third-Agrument is your branch(Ie: master)
+#
+## **** An example of what it should look like when you run your script from the terminal ****
+## $ ./github-push.sh 'Add your comment here' origin master
+# Remember any branch can be used still it doesnt have to be master
+##The -n defines the required character count to stop reading and -s hides the user's input, add "minus r" to the read flags, which will cause the string to be interpreted as raw without considering any backslash escapes
+##read -n 1 -s -r -p "If your commit looks right, Press any key to continue"
+## or you can use the following function so if you need to pause mutiple times in a script there is no need to rewrite it time and again, the -r -s -p can be added together if you wish as well as -n and 1 
+#
+#pause(){
+# read -n1 -rsp $'Press any key to continue or Ctrl+C to exit...\n'
+#}
+#
+#### Old script using an if else statement doesnot loop until users says yes it looks right
 
-# $ ./github-push.sh 'First Argument(Your commit message Put within quotes so you can put spaces ir else it will think every word seperated by spaces is a new agrument)' Second-Agrument(Ie: origin) Third-Agrument is your branch(Ie: Master)
+## Adds the recently changed files to your commit
+#git add .
+##
+### Displays the files you are commiting and Checks with user to make sure commit looks right.
+#git status
+##
+#    echo -n "Does your commit look right? (y/n)"
+#    read Useranswer
+#    if [ $Useranswer = y ]; then
+#       #Commits the files to be pushed to Github
+#       git commit -m "$1"
+#       
+#							#Pushes the files in your commit to github
+#       git push $2 $3 
+#							
+#    elif [ $Useranswer = n ]; then
+#        echo -n 'Please enter the name of the file you wish to remove: '
+#								read file
+#        git reset HEAD $file
+#								echo -n "Does your commit look right? (y/n)"
+#        read Useranswer
+#        
+#    fi
+####
 
-
-# An example of what it should look like when you run your script from the terminal
-# $ ./github-push.sh 'Add your comment here' origin master
-
-
-pause(){
- read -n1 -rsp $'Press any key to continue or Ctrl+C to exit...\n'
-}
-
-
-# Adds the recently changed files to your commit
+#!/bin/env bash
+# adds all the changed files to the commit
 git add .
-
-# Displays the files you are commiting and Checks with user to make sure commit looks right.
+## Displays the files you are commiting to show user the commit and make sure it looks right and all files should be committed.
 git status
-
-# Asks user to confirm that the commit looks right and if it does push any key to push it to the branch that the suppiled in the command line when running the script
-#The -n defines the required character count to stop reading and -s hides the user's input, add "minus r" to the read flags, which will cause the string to be interpreted as raw without considering any backslash escapes
-#read -n 1 -s -r -p "If your commit looks right, Press any key to continue"
-
-pause
+#asks the user if the commit looks right and until Y or y is entered it will not push the commit but as you to enter the file you wish to remove from the commit
+ echo -n "Does your commit look right, If so press any key to continue or press N/n to choose a file to remove from the commit: "
+	#read is the same thing basically as gets in ruby Ie: ask for user input and stores the answer to be used in the variable name 
+read Useranswer
+while [ "$Useranswer" == n ] || [ "$Useranswer" == N ] ;
+do
+  echo -n 'Please enter the name of the file you wish to remove or press CTRL+C to cancel :'
+  read file
+  git reset HEAD $file
+		git status
+  echo -n "Does your commit look right, If so press any key to continue or press N/n to choose a file to remove from the commit: "
+  read Useranswer
+done
+#Having said yes by pressing any other key then N/n the commit looks correct it will push to github
 #Commits the files to be pushed to Github
-git commit -m "$1"
-#Pushes the files in your commit to github
-git push $2 $3
-#This will push to heroku * Note this pushes to the master branch of heroku , if you have mutiple branches you are working on and they are named the same as the branch you are pushing to on GitHub you can change "master" on the following line to $3 which will push to the branch you specified above. it should be noted that if you are on the correct branch when you push in your terminal there is no need to worry as it will push that branch anyways and there is really no need to specify origin master but some people like to make sure so lets just go ahead and add specify it just to make sure all is gravy 
+#We put the $1 inside double quotes so we can add quotes around our commit message so we can have spaces in our message"
+git commit -m "$1"    
+#Pushes the files in your commit to github to the origin/branch specified whe launching the script through 
+git push $2 $3 
+
+#This will push to heroku * Note this pushes to the master branch of heroku , if you have mutiple branches you are working on and they are named the same as the branch you are pushing to on GitHub you can change "master" on the following line to $3 which will push to the branch you specified above, or you can add another agrument and specify it when running your script. *Note though you are pushing to the master branch of heroku if you are on a branch inside your terminal when you push you github code it will push that branch of code to heroku's master branch
 git push heroku master 

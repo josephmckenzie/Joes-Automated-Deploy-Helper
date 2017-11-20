@@ -59,7 +59,7 @@ do
   echo -n "Does your commit look right, If so press any key to continue or press N/n to choose a file to remove from the commit: "
   read Useranswer
 done
-#Having said yes the commit looks correct it will push
+#Having said yes by pressing any other key then N/n the commit looks correct it will push to github
 #Commits the files to be pushed to Github
 git commit -m "$1"    
 #Pushes the files in your commit to github to the origin/branch specified whe launching the script through 
