@@ -41,23 +41,35 @@
 #    fi
 ####
 
+
+##This script will push to GitHub and Heroku saving you time from having to manually push to both or to actually have to go to heroku to push you changed code each time.
+#
+## $ ./github-push.sh 'First Argument(Your commit message Put within quotes so you can put spaces ir else it will think every word seperated by spaces is a new agrument)' Second-Agrument(Ie: origin) Third-Agrument is your branch(Ie: master)
+#
+## **** An example of what it should look like when you run your script from the terminal ****
+## $ ./github-push.sh 'Add your comment here' origin master
+# Remember any branch can be used still it doesnt have to be master
+
 #!/bin/env bash
+
+commitcheck() {
+echo -n "If your commit looks right press any key to continue, if not press N/n to choose a file to remove from the commit: "
+	#read is the same thing basically as gets in ruby Ie: ask for user input and stores the answer to be used in the variable name 
+read Useranswer
+}
 # adds all the changed files to the commit
 git add .
 ## Displays the files you are commiting to show user the commit and make sure it looks right and all files should be committed.
 git status
 #asks the user if the commit looks right and until Y or y is entered it will not push the commit but as you to enter the file you wish to remove from the commit
-echo -n "If your commit looks right press any key to continue, if not press N/n to choose a file to remove from the commit: "
-	#read is the same thing basically as gets in ruby Ie: ask for user input and stores the answer to be used in the variable name 
-read Useranswer
+commitcheck
 while [ "$Useranswer" == n ] || [ "$Useranswer" == N ] ;
 do
   echo -n 'Please enter the name of the file you wish to remove or press enter to unstage all files in the commit. Press CTRL+C to cancel :'
   read file
   git reset HEAD $file
 		git status
-echo -n "If your commit looks right press any key to continue, if not press N/n to choose a file to remove from the commit: "
-  read Useranswer
+commitcheck
 done
 #Having said yes by pressing any other key then N/n the commit looks correct it will push to github
 #Commits the files to be pushed to Github
@@ -65,3 +77,4 @@ git commit -m "$1"
 #Pushes the files in your commit to github to the origin/branch specified whe launching the script through 
 git push $2 $3 
 
+#####
