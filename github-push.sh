@@ -16,10 +16,10 @@
 #
 ## Adds the recently changed files to your commit
 #git add .
-#
-## Displays the files you are commiting and Checks with user to make sure commit looks right.
+##
+### Displays the files you are commiting and Checks with user to make sure commit looks right.
 #git status
-#
+##
 #    echo -n "Does your commit look right? (y/n)"
 #    read Useranswer
 #    if [ $Useranswer = y ]; then
@@ -41,34 +41,26 @@
 
 
 #!/bin/env bash
-
-# Adds the recently changed files to your commit
 git add .
-
-# Displays the files you are commiting and Checks with user to make sure commit looks right.
+#
+## Displays the files you are commiting and Checks with user to make sure commit looks right.
 git status
-
+#
 echo -n "Does your commit look right? (y/n)"
-read Useranswer
-#echo "Your id: $line"
-#echo "Do you want to change(Y to change, C to conntinue)?"
-#read ans
-while [ $Useranswer == y ] || [ $Useranswer == Y ] ;
+read ans
+while [ $ans == n ] || [ $ans == N ] ;
 do
-#Commits the files to be pushed to Github
-       git commit -m "$1"
-       
-							#Pushes the files in your commit to github
-       git push $2 $3 
-							done
-						
-while [ $Useranswer == n ] || [ $Useranswer == N ] ;
-do
- echo -n 'Please enter the name of the file you wish to remove: '
-								read file
-        git reset HEAD $file
-								echo -n "Does your commit look right? (y/n)"
-        read Useranswer
+  echo -n 'Please enter the name of the file you wish to remove: '
+  read file
+  git reset HEAD $file
+		git status
+  echo -n "Does your commit look right? (y/n)"
+  read ans
 done
 
+#Commits the files to be pushed to Github
+       git commit -m "$1"
+#       
+#							#Pushes the files in your commit to github
+       git push $2 $3 
 
