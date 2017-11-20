@@ -54,7 +54,7 @@ joe@joe-X553SA:~$ toilet -f ivrit 'Mike Sucks' | boxes -d cat -a hc -p h8 | lolc
 
 ----------------------------------------------------------------------------------------------------------
 
-Say you want to add a custom owl file you can do it like
+Say you want to add a custom cow file owl.cow file you can do it like
 
 
 figlet Mined Minds | cowsay -f ~/Desktop/cows/owl.cow -n
