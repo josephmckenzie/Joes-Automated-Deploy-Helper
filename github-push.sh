@@ -47,8 +47,8 @@ git add .
 ## Displays the files you are commiting to show user the commit and make sure it looks right and all files should be committed.
 git status
 #asks the user if the commit looks right and until Y or y is entered it will not push the commit but as you to enter the file you wish to remove from the commit
-echo -n "Does your commit look right? (y/n)"
-#read is the same thing basically as gets in ruby Ie: ask for user input and stores the answer to be used in the variable name 
+ echo -n "Does your commit look right, If so press any key to continue or press N/n to choose a file to remove from the commit: "
+	#read is the same thing basically as gets in ruby Ie: ask for user input and stores the answer to be used in the variable name 
 read Useranswer
 while [ $Useranswer == n ] || [ $Useranswer == N ] ;
 do
@@ -56,14 +56,12 @@ do
   read file
   git reset HEAD $file
 		git status
-  echo -n "Does your commit look right? (y/n)"
+  echo -n "Does your commit look right, If so press any key to continue or press N/n to choose a file to remove from the commit: "
   read Useranswer
 done
-if [ $Useranswer = y ] || [ $Useranswer = Y ] ; then
-#       #Commits the files to be pushed to Github
-       git commit -m "$1"
-#       
-#							#Pushes the files in your commit to github
-       git push $2 $3 
-#							
-fi
+#Having said yes the commit looks correct it will push
+#Commits the files to be pushed to Github
+git commit -m "$1"    
+#Pushes the files in your commit to github to the origin/branch specified whe launching the script through 
+git push $2 $3 
+
