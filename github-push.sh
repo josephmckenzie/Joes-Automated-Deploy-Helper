@@ -50,7 +50,7 @@ git status
  echo -n "Does your commit look right, If so press any key to continue or press N/n to choose a file to remove from the commit: "
 	#read is the same thing basically as gets in ruby Ie: ask for user input and stores the answer to be used in the variable name 
 read Useranswer
-while [ $Useranswer == n ] || [ $Useranswer == N ] ;
+while [ "$Useranswer" == n ] || [ "$Useranswer" == N ] ;
 do
   echo -n 'Please enter the name of the file you wish to remove or press CTRL+C to cancel :'
   read file
