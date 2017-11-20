@@ -47,16 +47,16 @@ git add .
 ## Displays the files you are commiting to show user the commit and make sure it looks right and all files should be committed.
 git status
 #asks the user if the commit looks right and until Y or y is entered it will not push the commit but as you to enter the file you wish to remove from the commit
- echo -n "Does your commit look right, If so press any key to continue or press N/n to choose a file to remove from the commit: "
+echo -n "If your commit looks right press any key to continue, if not press N/n to choose a file to remove from the commit: "
 	#read is the same thing basically as gets in ruby Ie: ask for user input and stores the answer to be used in the variable name 
 read Useranswer
 while [ "$Useranswer" == n ] || [ "$Useranswer" == N ] ;
 do
-  echo -n 'Please enter the name of the file you wish to remove or press CTRL+C to cancel :'
+  echo -n 'Please enter the name of the file you wish to remove or press enter to unstage all files in the commit. Press CTRL+C to cancel :'
   read file
   git reset HEAD $file
 		git status
-  echo -n "Does your commit look right, If so press any key to continue or press N/n to choose a file to remove from the commit: "
+echo -n "If your commit looks right press any key to continue, if not press N/n to choose a file to remove from the commit: "
   read Useranswer
 done
 #Having said yes by pressing any other key then N/n the commit looks correct it will push to github
