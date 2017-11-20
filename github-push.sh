@@ -59,9 +59,11 @@ do
   echo -n "Does your commit look right? (y/n)"
   read Useranswer
 done
-#Having said yes the commit looks correct it will push
-#Commits the files to be pushed to Github
-git commit -m "$1"    
-#Pushes the files in your commit to github to the origin/branch specified whe launching the script through 
-git push $2 $3 
-
+if [ $Useranswer = y ] || [ $Useranswer = Y ] ; then
+#       #Commits the files to be pushed to Github
+       git commit -m "$1"
+#       
+#							#Pushes the files in your commit to github
+       git push $2 $3 
+#							
+fi
