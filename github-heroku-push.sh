@@ -17,7 +17,7 @@ git status
 
 # Asks user to confirm that the commit looks right and if it does push any key to push it to the branch that the suppiled in the command line when running the script
 #The -n 1 is the required characters read, the -s hides user input
-read -n 1 -s -p "If your commit looks right, Press any key to continue"
+read -n 1 -p "If your commit looks right, Press any key to continue"
 
 #Commits the files to be pushed to Github
 git commit -m "$1"
