@@ -20,23 +20,24 @@ git add .
 # Displays the files you are commiting and Checks with user to make sure commit looks right.
 git status
 
-    echo -n "Change this line? (y/n)"
+    echo -n "Does your commit look right? (y/n)"
     read Useranswer
     if [ $Useranswer = y ]; then
-        echo -n "Please type any string:"
-        read Firststring
-        # insert new value into array
-        thearray[$item]=$Firststring
+       #Commits the files to be pushed to Github
+       git commit -m "$1"
+       
+							#Pushes the files in your commit to github
+       git push $2 $3 
+							
     elif [ $Useranswer = n ]; then
-        # not sure what to write here to resume 
-        :
+        echo -n 'Please enter the name of the file you wish to remove: '
+								read file
+        git reset HEAD $file
+				    
+								git status
+        echo -n "Does your commit look right? (y/n)"
+        read Useranswer
     fi
 # Asks user to confirm that the commit looks right and if it does push any key to push it to the branch that the suppiled in the command line when running the script
 
-pause
 
-#Commits the files to be pushed to Github
-git commit -m "$1"
-
-#Pushes the files in your commit to github
-git push $2 $3
