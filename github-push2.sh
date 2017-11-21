@@ -23,6 +23,7 @@ pause(){
 						 
 				elif [ "$Github" = 2 ]; then
 						git add .
+						git status
 						echo -n "Enter the branch name you wish to push to: "
 
 						git commit -m "blah"
