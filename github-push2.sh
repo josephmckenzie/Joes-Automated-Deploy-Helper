@@ -27,12 +27,16 @@ pause(){
 						echo -n "Please verify your commit, does it look correct?"
 						read verify
 						if [ "$verify" = y ] || [ "$verify" = Y ]; then
-						echo -n "Enter the branch name you wish to push to: "
+						echo -n "Enter a commit message: "
+						 read CommitMessage
+							git commit -m "$CommitMessage"
+      echo -n "Please enter the branch you wish to commit to: "
+							read GithubBranch
+						git push origin $GithubBranch	
 						elif [ "$verify" = n ] || [ "$verify" = N ]; then
-						echo -n "Please enter the name of the file you wish to remove: "
+						echo -e "Please enter the name of the file you wish to remove: "
       fi
-						git commit -m "blah"
-						git push origin $GithubBranch		
+						
 						fi
     elif [ "$MainService" = 2 ]; then
       echo "Heroku"
