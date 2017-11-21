@@ -26,9 +26,9 @@ pause(){
 						git status
 						echo -n "Please verify your commit, does it look correct?"
 						read verify
-						
+						if [ "$verify" = y]; then
 						echo -n "Enter the branch name you wish to push to: "
-
+      fi
 						git commit -m "blah"
 						git push origin $GithubBranch		
 						fi
