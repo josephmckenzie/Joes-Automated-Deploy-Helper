@@ -26,8 +26,10 @@ pause(){
 						git status
 						echo -n "Please verify your commit, does it look correct?"
 						read verify
-						if [ "$verify" = y]; then
+						if [ "$verify" = y ] || [ "$verify" = Y ]; then
 						echo -n "Enter the branch name you wish to push to: "
+						elif [ "$verify" = n ] || [ "$verify" = N ]; then
+						echo -n "Please enter the name of the file you wish to remove: "
       fi
 						git commit -m "blah"
 						git push origin $GithubBranch		
