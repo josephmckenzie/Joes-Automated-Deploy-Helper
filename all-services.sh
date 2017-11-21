@@ -1,9 +1,5 @@
 ##!/bin/env bash
 
-pause(){
- read -n1 -rsp $'Press any key to continue or Ctrl+C to exit...\n'
-}
-#
     echo  "Where would you like to push/commit code to today? :"
 				echo -e "1. Github"
 				echo -e "2. Heroku"
