@@ -22,9 +22,9 @@ pause(){
 						git pull origin $GithubBranch
 						 
 				elif [ "$Github" = 2 ]; then
-      echo -n "Enter the branch name you wish to push to: "
-						read GithubBranch
 						git add .
+						echo -n "Enter the branch name you wish to push to: "
+
 						git commit -m "blah"
 						git push origin $GithubBranch		
 						fi
