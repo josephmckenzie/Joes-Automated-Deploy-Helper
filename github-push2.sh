@@ -24,6 +24,9 @@ pause(){
 				elif [ "$Github" = 2 ]; then
 						git add .
 						git status
+						echo -n "Please verify your commit, does it look correct?"
+						read verify
+						
 						echo -n "Enter the branch name you wish to push to: "
 
 						git commit -m "blah"
