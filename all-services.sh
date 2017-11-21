@@ -37,7 +37,7 @@
 						
 						fi
     elif [ "$MainService" = 2 ]; then
-      echo "Heroku"
+      echo -n "What would you like to do today? :"
 				elif [ "$MainService" = 3 ]; then
       echo "Amazon"        
 						echo  "What service would you like to update? :"
