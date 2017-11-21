@@ -31,6 +31,8 @@
 						git push origin $GithubBranch	
 						elif [ "$verify" = n ] || [ "$verify" = N ]; then
 						echo -e "Please enter the name of the file you wish to remove: "
+						read $FiletoRemove
+						git reset HEAD $FiletoRemove
       fi
 						
 						fi
