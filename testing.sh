@@ -12,10 +12,10 @@
 						echo -n "Enter a number: "
 						read Github
 				if [ "$Github" = 1 ]; then
-				git pull origin master
+						git pull origin master
 				elif [ "$Github" = 2 ]; then
-git add .
-git status
+						git add .
+						git status
 commitcheck="n"
 while [ "$commitcheck" == n ]; do
     echo -n " Does this look good? (y/n): "
