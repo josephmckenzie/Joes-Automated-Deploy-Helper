@@ -1,4 +1,19 @@
 ##!/bin/env bash
+ echo  "Where would you like to push/commit code to today? :"
+				echo -e "1. Github"
+				echo -e "2. Heroku"
+				echo -e "3. Amazon"
+				echo -n "Enter a number: "
+    read MainService 
+    if [ "$MainService" = 1 ]; then
+      echo "What would you like to do today?"
+						echo -e "1. Pull"
+						echo -e "2. Push"
+						echo -n "Enter a number: "
+						read Github
+				if [ "$Github" = 1 ]; then
+				git pull origin master
+				elif [ "$Github" = 2 ]; then
 git add .
 git status
 commitcheck="n"
@@ -21,5 +36,6 @@ while [ "$commitcheck" == n ]; do
 								git push origin $branch
     fi
 done
-				 
+				 fi
+					fi
 				
