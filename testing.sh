@@ -45,16 +45,32 @@ git add .
 		elif [ "$MainService" = 2 ]; then
 	echo "What would you like to do today?"
 				echo -e "1. Push"
-				echo -e "2. Add enviromental variables"
+				echo -e "2. Add Config Variables"
 				echo -n "Enter a number: "
 				read Heroku
 		if [ "$Heroku" = 2 ]; then
-				git pull origin master
-		elif [ "$Heroku" = 1 ]; then
+		  echo "Please add a Config Variables key: "
+				read configkey
+	   echo "Please enter a Config Variables value: "
+				read envvconfigvalue
+    heroku config:set $configkey=$envvconfigvalue	
+				elif [ "$Heroku" = 1 ]; then
 	   add_check_commit
 		fi
 		else
-		echo "Amazon"
-						
+  echo "Amazon"        
+						echo  "What service would you like to update? :"
+				echo -e "1. Amazon's Lambda"
+				echo -e "2. Amazon's S3 Bucket"
+				echo -e "3. Amazon's Codedeploy"
+				echo -n "Enter a number: "
+    read AmazonService 
+    if [ "$AmazonService" = 1 ]; then
+      echo "Amazon's Lambda"
+    elif [ "$AmazonService" = 2 ]; then
+      echo "Amazon's S3 Bucket"
+				elif [ "$AmazonService" = 3 ]; then
+      echo "Amazon's Codedeploy"        
+    fi						
  fi
 				
