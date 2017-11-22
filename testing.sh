@@ -24,7 +24,6 @@ git add .
 				done
 }
 
-
 	echo  "Where would you like to push/commit code to today? :"
 	echo -e "1. Github"
 	echo -e "2. Heroku"
@@ -33,6 +32,7 @@ git add .
 		read MainService 
 		if [ "$MainService" = 1 ]; then
 				echo "What would you like to do today?"
+#				echo -e "3. Create new Repo"
 				echo -e "1. Pull"
 				echo -e "2. Push"
 				echo -n "Enter a number: "
@@ -41,21 +41,29 @@ git add .
 				git pull origin master
 		elif [ "$Github" = 2 ]; then
 				add_check_commit
+		elif [ "$Github" = 3 ]; then
+			echo "Please enter a new repo name: "
+		
 		fi
 		elif [ "$MainService" = 2 ]; then
-	echo "What would you like to do today?"
-				echo -e "1. Push"
-				echo -e "2. Add Config Variables"
+	   echo "What would you like to do today?"
+	   echo -e "1. Create new App"
+				echo -e "2. Push"
+				echo -e "3. Add Config Variables"
 				echo -n "Enter a number: "
 				read Heroku
-		if [ "$Heroku" = 2 ]; then
+		if [ "$Heroku" = 3 ]; then
 		  echo "Please add a Config Variables key: "
 				read configkey
 	   echo "Please enter a Config Variables value: "
 				read envvconfigvalue
     heroku config:set $configkey=$envvconfigvalue	
-				elif [ "$Heroku" = 1 ]; then
+				elif [ "$Heroku" = 2 ]; then
 	   add_check_commit
+				elif [ "$Heroku" = 1 ]; then
+				echo "Please enter a new for your app: "
+				read HerokuAppName
+				heroku create $HerokuAppName
 		fi
 		else
   echo "Amazon"        
