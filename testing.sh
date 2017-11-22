@@ -1,22 +1,25 @@
 ##!/bin/env bash
-
 git add .
 git status
-
-YANSWER="n"
-YORN="n"
-while [ "$YANSWER" == "$YORN" ]; do
-    git status
-    echo -n " Does this look right?: "
+commitcheck="n"
+while [ "$commitcheck" == n ]; do
+    echo -n " Does this look good? (y/n): "
     read ANSWER
-    YANSWER=`echo $ANSWER | tr [:upper:] [:lower:] | cut -c 1`
-    if [ "$YANSWER" == "$YORN" ]; then
-      read filename
-						echo -e "Enter the name of file to remove"
-						git reset HEAD $filename
+    commitcheck=`echo $ANSWER | tr [:upper:] [:lower:] | cut -c 1`
+    if [ "$commitcheck" == n ]; then
+        echo -e "Enter file to remove:"
+								read file
+								git reset HEAD $file
+								git status
+					else 
+					echo -e "Please enter a commit message: "
+				read commitmessage
+				git commit -m "$commitmessage"
+					echo -e "Enter the branch you want to push to: "
+					read branch
+					   echo "Pushing the commit"
+								git push origin $branch
     fi
-				git commit -m "testing while loop"
-				git push origin master
 done
 				 
 				
