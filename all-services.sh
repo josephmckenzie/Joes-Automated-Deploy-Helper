@@ -34,10 +34,31 @@
 						read $FiletoRemove
 						git reset HEAD $FiletoRemove
       fi
-						
 						fi
     elif [ "$MainService" = 2 ]; then
-      echo -n "What would you like to do today? :"
+      echo "What would you like to do today? :"
+						echo -e "1. Push"
+						echo -e "2. Add enviormental variables"
+						echo -n "Please enter a number: "
+						read Heroku
+						if [ "$Heroku" = 1 ]; then
+						git add .
+						git status
+						echo -n "Please verify your commit, does it look correct?"
+						read HerokuVerify
+						if [ "$HerokuVerify" = y ] || [ "HerouVerify" = Y ]; then
+						echo -n "What branch would you like to push to? : "
+						read HerokuBranch
+						git push heroku $HerokuBranch
+						elif [ "$HerokuVerify" = n ] || [ "HerokuVerify" = N ]; then
+						echo -n "Please enter the name of the file you wish to remove: "
+						read $HerokuFiletoRemove
+						git reset HEAD $HerokuFiletoRemove
+						
+						fi
+						elif [ "$Heroku" = 2 ]; then
+						echo "Env"
+						fi
 				elif [ "$MainService" = 3 ]; then
       echo "Amazon"        
 						echo  "What service would you like to update? :"
