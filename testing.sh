@@ -24,6 +24,15 @@ git add .
 				done
 }
 
+help() {
+cat help.txt
+}
+
+if [ "$1" == -h ]; then
+ help
+	exit 0
+	fi
+
 	echo  "Where would you like to push/commit code to today? :"
 	echo -e "1. Github"
 	echo -e "2. Heroku"
@@ -55,7 +64,6 @@ git add .
     git commit -m "$createrepocommitmessage"
     git remote add origin https://github.com/"$profilename"/"$RepoName".git
     git push -u origin master
-		
 		fi
 		elif [ "$MainService" = 2 ]; then
 	   echo "What would you like to do today?"
@@ -78,21 +86,24 @@ git add .
 				heroku create $HerokuAppName
 		fi
 		else
-  echo "Amazon"        
 						echo  "What service would you like to update? :"
-				echo -e "1. Amazon's Lambda"
-				echo -e "2. Amazon's S3 Bucket"
-				echo -e "3. Amazon's Codedeploy"
+				echo -e "1. Create new IAM user"
+				echo -e "2. Amazon's Lambda"
+				echo -e "3. Amazon's S3 Bucket"
+				echo -e "4. Amazon's Codedeploy"
 				echo -n "Enter a number: "
     read AmazonService 
-    if [ "$AmazonService" = 1 ]; then
-      echo "Amazon's Lambda"
+				if [ "$AmazonService" = 1 ]; then
+				echo "Creating IAM user"
+				read IAMusername
+				aws iam  create-user --user-name $IAMusername
     elif [ "$AmazonService" = 2 ]; then
+      echo "Amazon's Lambda"
+    elif [ "$AmazonService" = 3 ]; then
       echo "Amazon's S3 Bucket"
-				elif [ "$AmazonService" = 3 ]; then
+				elif [ "$AmazonService" = 4 ]; then
       echo "Amazon's Codedeploy"        
     fi						
- fi
-	
+ fi	
 	
 				
