@@ -1,0 +1,81 @@
++++ Welcome to Joe's devops Script +++
+
+This script is intended to make your job easier, wether it be creating a new Github repo, pulling or pushing to a repo.Creating a new app on Heroku and setting up any needed config variables. Creating IAM roles and users, adding needed policies for AWS, as well update and manage many services for AWS such as Lambdas, S3 Buckets, Code deploy. I plan on adding many ohter services as well. If you have a service you would like me to add feel free to shoot me an email at joseph.p.mckenzie84@gmail.com
+
+
++++ Table of Contents +++
+
+1. GitHub
+2. Heroku
+3. Amazon Web Services
+
+
+
+======= 1. GitHub ========
+
+--Table of Contents--
+
+1. Create new repo
+2. Pull Code
+3. Push Code
+
+
+1.Create a new repo
+
+
+
+
+2. Pull Code
+
+
+
+
+3. Push Code
+
+
+====== 2. Heroku =======
+
+--Table of Contents--
+
+1. Create new app
+2. Push code to app
+3. Add config variables
+
+
+1. Create a new app
+
+
+
+
+2. Push Code to Heroku
+
+
+
+3. Add new config variables
+
+
+==== 3. Amazon Web Services ====
+
+--Table of Contents --
+
+1. Create new IAM user
+2. Create new IAM role
+3. Update/Add Policies
+4. Update various AWS services
+
+
+1. Create new IAM user
+
+
+
+2. Create new IAM role
+
+
+
+3. Update Policies
+
+
+
+4. Update various AWS services
+(Will be updated to include what services this is just a placeholder)
+
