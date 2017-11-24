@@ -1,45 +1,83 @@
 #!/bin/bash
 
 
-create_new_repo() {
+Create_new_repo() {
 echo "Please enter your profile name: "
-			   read profilename
+			   read Github_profilename
 			   echo "Please enter a new repo name: "
-			   read RepoName
-			   curl --user $profilename https://api.github.com/user/repos -d "{\"name\":\"$RepoName\"}"
-      echo "$RepoName" >> README.md
+			   read Guthub_repo_name
+			   curl --user $profilename https://api.github.com/user/repos -d "{\"name\":\"$Guthub_repo_name\"}"
+      echo "$Guthub_repo_name" >> README.md
       git init
       git add README.md
 				  echo "Please enter a commit message: "
-				  read createrepocommitmessage
-      git commit -m "$createrepocommitmessage"
-      git remote add origin https://github.com/"$profilename"/"$RepoName".git
+				  read Github_new_repo_message
+      git commit -m "$Github_new_repo_message"
+      git remote add origin https://github.com/"$Github_profilename"/"$Guthub_repo_name".git
       git push -u origin master
 }
-add_check_commit(){
+Github_add_check_commit(){
 git add .
 				git status
-				commitcheck="n"
-				while [ "$commitcheck" == n ]; do
+				Github_commit_check="n"
+				while [ "$Github_commit_check" == n ]; do
 #				// -n is saying do not put a newline afterwards
 				echo -n " Does this look good? (y/n): "
 				read ANSWER
-				commitcheck=`echo $ANSWER | tr [:upper:] [:lower:] | cut -c 1`
-				if [ "$commitcheck" == n ]; then
+				Github_commit_check=`echo $ANSWER | tr [:upper:] [:lower:] | cut -c 1`
+				if [ "$Github_commit_check" == n ]; then
+						echo -e "Enter file to remove:"
+						read Github_file
+						git reset HEAD $Github_file
+						git status
+			 else 
+						echo -e "Please enter a commit message: "
+						read Github_commit_message
+						git commit -m "$Github_commit_message"
+						echo -e "Enter the branch you want to push to: "
+						read Github_branch
+						echo "Pushing the commit"
+						git push origin $Github_branch
+				fi
+				done
+}
+
+Heroku_create_app() {
+echo "Please enter a new for your app: "
+					read HerokuAppName
+					heroku create $HerokuAppName
+}
+Heroku_add_check_commit(){
+git add .
+				git status
+				Github_commit_message="n"
+				while [ "$Github_commit_message" == n ]; do
+#				// -n is saying do not put a newline afterwards
+				echo -n " Does this look good? (y/n): "
+				read ANSWER
+				Github_commit_message=`echo $ANSWER | tr [:upper:] [:lower:] | cut -c 1`
+				if [ "$Github_commit_message" == n ]; then
 						echo -e "Enter file to remove:"
 						read file
 						git reset HEAD $file
 						git status
 			 else 
 						echo -e "Please enter a commit message: "
-						read commitmessage
-						git commit -m "$commitmessage"
+						read Heroku_commit_message
+						git commit -m "$Heroku_commit_message"
 						echo -e "Enter the branch you want to push to: "
-						read branch
+						read Github_branch
 						echo "Pushing the commit"
-						git push origin $branch
+						git push heroku $Github_branch
 				fi
 				done
+}
+Heroku_add_config(){
+echo "Please add a Config Variables key: "
+					read configkey
+	   echo "Please enter a Config Variables value: "
+					read envvconfigvalue
+    	heroku config:set $configkey=$envvconfigvalue	
 }
 
 help() {
@@ -53,7 +91,7 @@ if [ "$1" == -h ]; then
 
 
 
-#Ps3 is a default prompt statment for bash PS3 is for 
+#PS3 is a default prompt statment for bash PS3 is for 
 PS3='Please enter your choice: '
 options=("Github" "Heroku" "Amazon (Work in Progress)" "Help" "Quit")
 select opt in "${options[@]}"
@@ -65,7 +103,7 @@ select GithubOpt in "${GithubOptions[@]}"
 do
     case $GithubOpt in
         "Create New Repo")
-								    create_new_repo
+								    Create_new_repo
             echo "Creating New Repo"
 												break
             ;;
@@ -75,9 +113,9 @@ do
 												break
             ;;
         "Push")
-								    add_check_commit
+								    Github_add_check_commit
             echo "Pushing Code"
-												break
+											
             ;;
         "Quit")
             break
@@ -94,15 +132,18 @@ select HerokuOpt in "${HerokuOptions[@]}"
 do
     case $HerokuOpt in
         "Create New App")
-            echo "You chose Create New App"
+								    Heroku_create_app
+            echo "Creating new Heroku app"
 												break
             ;;
         "Push")
-            echo "You chose Push"
+								    Heroku_add_check_commit
+            echo "Pushing Code"
 												break
             ;;
         "Config Vars")
-            echo "you chose Config Vars"
+								    Heroku_add_config
+            echo "Adding Config Variables"
 												break
             ;;
         "Quit")
