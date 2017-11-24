@@ -287,7 +287,7 @@ break
         "Lambda")
 								
 
- LambdaOptions=("Create New Lambda Function" "Update Lambda Function" "Help" "Quit")
+ LambdaOptions=("Create New Lambda Function" "Update Lambda Function" "Enviromental Variables" "Help" "Quit")
 select LambdaOpt in "${LambdaOptions[@]}"
 do
     case $LambdaOpt in
@@ -325,6 +325,18 @@ do
             echo "Updating Lambda Function"
 												break
             ;;
+									"Enviromental Variables")
+									 echo "Please enter the Lambda function name"
+										read LAMBDANAME
+										echo "Please enter a Env Key"
+										read ENVKEY
+										echo "Please enter a Env Value"
+										read ENVVALUE
+									aws lambda update-function-configuration --function-name "$LAMBDANAME" --environment Variables={"$ENVKEY"="$ENVVALUE"}
+
+									echo "Updating Enviromental Variables"
+									break
+									;;
         
 									"Help")
 									 echo "Displying Help"
