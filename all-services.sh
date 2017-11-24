@@ -115,7 +115,7 @@ do
         "Push")
 								    Github_add_check_commit
             echo "Pushing Code"
-											echo $GithubOptions
+											echo $opt
             ;;
         "Quit")
             break
