@@ -286,39 +286,43 @@ break
             ;;
         "Lambda")
 								
-#								echo "Please enter a region"
-#								echo "Ex: us-west-2"
-#								read REGION
-#								echo "Please enter a name for your Lambda function"
-#								read FUNCTIONNAME
-#								echo "Please enter the name of your lambda zip file (NO extension required)"
-#								read ZIPFILE
-#								echo "Please enter your ARN"
-#								echo "Ex: arn:aws:iam::22*******74:role/YOURIAMROLENAME"
-#								read YOURARN
-#								echo "Please enter your handler"
-#								echo "Ex: main.add (Python)"
-#								echo "Ex: index.handler (Node.js)"
-#								read HANDLER
-#								echo "Please enter a run time"
-#								echo "Ex: python2.7 (Python)"
-#								echo "Ex: nodejs4.3 (Node.js)"
-#								read RUNTIME
-#								echo "Please enter your IAM username"
-#								read PROFILE
-#								aws lambda create-function --region "$REGION" --function-name "$FUNCTIONNAME" --zip-file fileb://"$ZIPFILE".zip --role "$YOURARN" --handler "$HANDLER" --runtime "$RUNTIME" --profile "$PROFILE"
+
  LambdaOptions=("Create New Lambda Function" "Update Lambda Function" "Help" "Quit")
 select LambdaOpt in "${LambdaOptions[@]}"
 do
     case $LambdaOpt in
         "Create New Lambda Function")
-								    
+								    								echo "Please enter a region"
+								echo "Ex: us-west-2"
+								read REGION
+								echo "Please enter a name for your Lambda function"
+								read FUNCTIONNAME
+								echo "Please enter the name of your lambda zip file (NO extension required)"
+								read ZIPFILE
+								echo "Please enter your ARN"
+								echo "Ex: arn:aws:iam::22*******74:role/YOURIAMROLENAME"
+								read YOURARN
+								echo "Please enter your handler"
+								echo "Ex: main.add (Python)"
+								echo "Ex: index.handler (Node.js)"
+								read HANDLER
+								echo "Please enter a run time"
+								echo "Ex: python2.7 (Python)"
+								echo "Ex: nodejs4.3 (Node.js)"
+								read RUNTIME
+								echo "Please enter your IAM username"
+								read PROFILE
+								aws lambda create-function --region "$REGION" --function-name "$FUNCTIONNAME" --zip-file fileb://"$ZIPFILE".zip --role "$YOURARN" --handler "$HANDLER" --runtime "$RUNTIME" --profile "$PROFILE"
             echo "Creating new Lambda Function"
 												break
             ;;
         "Update Lambda Function")
-								    
-            echo "Update Lambda Function"
+								echo "Please enter your Lambda function name"
+								read FUNCTIONNAME
+								echo "Please enter the name of your Labda zip file (No need for extension)"
+								read ZIPFILE
+								    aws lambda update-function-code --function-name "$FUNCTIONNAME" --zip-file fileb://"$ZIPFILE".zip
+            echo "Updating Lambda Function"
 												break
             ;;
         
