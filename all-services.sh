@@ -157,10 +157,15 @@ done
 												break
             ;;
         "Amazon")
-                      AmazonOptions=("IAM Config" "Lambda" "S3 Bucket" "Quit")
+                      AmazonOptions=("AWS Config" "IAM Config" "Lambda" "S3 Bucket" "Help" "Quit")
 select AmazonOpt in "${AmazonOptions[@]}"
 do
     case $AmazonOpt in
+				    "AWS Config")
+								    aws configure
+            echo "Configuring AWS"
+												break
+            ;;
         "IAM Config")
  AmazonOptions=("New IAM user" "New IAM role" "IAM policies" "Quit")
 select AmazonOpt in "${AmazonOptions[@]}"
@@ -198,6 +203,10 @@ break
             echo "you chose S3 Bucket"
 												break
             ;;
+									"Help")
+									   help
+									   echo "Displaying Help"
+												;;
         "Quit")
             break
             ;;
