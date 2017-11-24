@@ -89,16 +89,8 @@ if [ "$1" == -h ]; then
 	exit 0
 	fi
 
-
-
-#PS3 is a default prompt statment for bash PS3 is for 
-PS3='Please enter your choice: '
-options=("Github" "Heroku" "Amazon (Work in Progress)" "Help" "Quit")
-select opt in "${options[@]}"
-do
-    case $opt in
-        "Github")
-            GithubOptions=("Create New Repo" "Pull" "Push" "Quit")
+GithubOptionMenu() {
+ GithubOptions=("Create New Repo" "Pull" "Push" "Quit")
 select GithubOpt in "${GithubOptions[@]}"
 do
     case $GithubOpt in
@@ -115,15 +107,25 @@ do
         "Push")
 								    Github_add_check_commit
             echo "Pushing Code"
-												echo $options
+												break
             ;;
         "Quit")
             break
             ;;
         *) echo invalid option;;
     esac
-				
+				GithubOptionMenu
 done
+}
+
+#PS3 is a default prompt statment for bash PS3 is for 
+PS3='Please enter your choice: '
+options=("Github" "Heroku" "Amazon (Work in Progress)" "Help" "Quit")
+select opt in "${options[@]}"
+do
+    case $opt in
+        "Github")
+           GithubOptionMenu
 												break
             ;;
         "Heroku")
