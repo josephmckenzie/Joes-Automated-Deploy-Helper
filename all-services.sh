@@ -167,7 +167,7 @@ done
 												break
             ;;
         "Amazon")
-                      AmazonOptions=("AWS Config" "IAM Config" "Lambda" "S3 Bucket" "Help" "Quit")
+                      AmazonOptions=("IAM Config" "AWS Config" "Lambda" "S3 Bucket" "Help" "Quit")
 select AmazonOpt in "${AmazonOptions[@]}"
 do
     case $AmazonOpt in
@@ -177,25 +177,99 @@ do
 												break
             ;;
         "IAM Config")
- AmazonOptions=("New IAM user" "New IAM role" "IAM policies" "Help" "Quit")
+ AmazonOptions=("New CLI User" "IAM policies" "IAM Roles" "Help" "Quit")
 select AmazonOpt in "${AmazonOptions[@]}"
 do
     case $AmazonOpt in
-        "New IAM user")
+        "New CLI User")
 								    echo "Please enter a name for your new IAM user"
 												read IAMUSER
             aws iam create-user --user-name "$IAMUSER"
 												echo "Creating new IAM user"
-												break
-            ;;
-        "New IAM role")
-            echo "Create new IAM role"
+												echo "Please enter a Group name" 
+												read IAMGROUP
+								    aws iam create-group --group-name "$IAMGROUP"
+            echo "Creating new IAM group"
+												echo "Adding IAM user to group"
+												aws iam add-user-to-group --user-name "$IAMUSER" --group-name "$IAMGROUP"
+												echo "Please enter a password for your IAM user"
+												read IAMPASSWORD
+												aws iam create-login-profile --user-name "$IAMUSER" --password "$IAMPASSWORD"
+												echo "Creating IAM password"
+												aws iam create-access-key --user-name "$IAMUSER"
+												echo "Please store the secret and access key somewhere SAFE"
 												break
             ;;
         "IAM policies")
-            echo "you chose IAM policies"
+                     IAMPOLICIES=("Lambda" "S3" "Help" "Quit")
+select IAMPOLICY in "${IAMPOLICIES[@]}"
+do
+    case $IAMPOLICY in
+        "Lambda")
+								echo "Please enter your IAM username"
+								read IAMUSER
+								echo "Please enter a Policy name for your new policy"
+								read POLICYNAME
+								   jq -n --arg appname "LambdaPolicy" '{"Version": "2012-10-17","Statement": [{"Effect": "Allow","Action": ["iam:*", "lambda:*"],"Resource": "*" }]}' > lambda_policy.json
+											aws iam put-user-policy --user-name "$IAMUSER" --policy-name "$POLICYNAME" --policy-document file://lambda_policy.json
+											echo "Please enter the following information"
+								   aws configure --profile "$IAMUSER"
+            echo "Creating Lambda Policy"
 												break
             ;;
+        "S3")
+								    
+            echo "Creating S3 Policy"
+												break
+            ;;
+									"Help")
+									 echo "Displaying Help"
+										help
+										break
+										;;
+        "Quit")
+            break
+            ;;
+        *) echo invalid option;;
+    esac
+				
+done
+												break
+            ;;
+							"IAM Roles")
+							
+IAMROLESS=("Lambda" "S3" "Help" "Quit")
+select IAMROLES in "${IAMROLESS[@]}"
+do
+    case $IAMROLES in
+        "Lambda")
+								echo "Please enter a name for your new role"
+								read ROLENAME
+											jq -n --arg appname "$ROLENAME" '{"Version": "2012-10-17","Statement": [{"Effect": "Allow","Principal": { "AWS" : "*" },"Action": "sts:AssumeRole"}]}' > "$ROLENAME".json
+											aws iam create-role --role-name "$ROLENAME" --assume-role-policy-document file://"$ROLENAME".json
+											echo "Please Write down your arn in a safe place"
+											echo "Creating Lambda Role"
+												break
+            ;;
+        "S3")
+								    
+            echo "Creating S3 Role"
+												break
+            ;;
+									"Help")
+									 echo "Displaying Help"
+										help
+										break
+										;;
+        "Quit")
+            break
+            ;;
+        *) echo invalid option;;
+    esac
+				
+done							
+							break
+							;;
 									"Help")
 												echo "Displaying Help"
 												help
@@ -211,7 +285,56 @@ done
 break
             ;;
         "Lambda")
-            echo "You chose Lambda"
+								
+#								echo "Please enter a region"
+#								echo "Ex: us-west-2"
+#								read REGION
+#								echo "Please enter a name for your Lambda function"
+#								read FUNCTIONNAME
+#								echo "Please enter the name of your lambda zip file (NO extension required)"
+#								read ZIPFILE
+#								echo "Please enter your ARN"
+#								echo "Ex: arn:aws:iam::22*******74:role/YOURIAMROLENAME"
+#								read YOURARN
+#								echo "Please enter your handler"
+#								echo "Ex: main.add (Python)"
+#								echo "Ex: index.handler (Node.js)"
+#								read HANDLER
+#								echo "Please enter a run time"
+#								echo "Ex: python2.7 (Python)"
+#								echo "Ex: nodejs4.3 (Node.js)"
+#								read RUNTIME
+#								echo "Please enter your IAM username"
+#								read PROFILE
+#								aws lambda create-function --region "$REGION" --function-name "$FUNCTIONNAME" --zip-file fileb://"$ZIPFILE".zip --role "$YOURARN" --handler "$HANDLER" --runtime "$RUNTIME" --profile "$PROFILE"
+ LambdaOptions=("Create New Lambda Function" "Update Lambda Function" "Help" "Quit")
+select LambdaOpt in "${LambdaOptions[@]}"
+do
+    case $LambdaOpt in
+        "Create New Lambda Function")
+								    
+            echo "Creating new Lambda Function"
+												break
+            ;;
+        "Update Lambda Function")
+								    
+            echo "Update Lambda Function"
+												break
+            ;;
+        
+									"Help")
+									 echo "Displying Help"
+										help
+										break
+										;;
+        "Quit")
+            break
+            ;;
+        *) echo invalid option;;
+    esac
+				
+done
+										
 												break
             ;;
         "S3 Bucket")
