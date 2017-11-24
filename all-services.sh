@@ -1,4 +1,58 @@
 #!/bin/bash
+
+
+create_new_repo() {
+echo "Please enter your profile name: "
+			   read profilename
+			   echo "Please enter a new repo name: "
+			   read RepoName
+			   curl --user $profilename https://api.github.com/user/repos -d "{\"name\":\"$RepoName\"}"
+      echo "$RepoName" >> README.md
+      git init
+      git add README.md
+				  echo "Please enter a commit message: "
+				  read createrepocommitmessage
+      git commit -m "$createrepocommitmessage"
+      git remote add origin https://github.com/"$profilename"/"$RepoName".git
+      git push -u origin master
+}
+add_check_commit(){
+git add .
+				git status
+				commitcheck="n"
+				while [ "$commitcheck" == n ]; do
+#				// -n is saying do not put a newline afterwards
+				echo -n " Does this look good? (y/n): "
+				read ANSWER
+				commitcheck=`echo $ANSWER | tr [:upper:] [:lower:] | cut -c 1`
+				if [ "$commitcheck" == n ]; then
+						echo -e "Enter file to remove:"
+						read file
+						git reset HEAD $file
+						git status
+			 else 
+						echo -e "Please enter a commit message: "
+						read commitmessage
+						git commit -m "$commitmessage"
+						echo -e "Enter the branch you want to push to: "
+						read branch
+						echo "Pushing the commit"
+						git push origin $branch
+				fi
+				done
+}
+
+help() {
+cat help.txt
+}
+
+if [ "$1" == -h ]; then
+ help
+	exit 0
+	fi
+
+
+
 #Ps3 is a default prompt statment for bash PS3 is for 
 PS3='Please enter your choice: '
 options=("Github" "Heroku" "Amazon (Work in Progress)" "Help" "Quit")
@@ -11,15 +65,18 @@ select GithubOpt in "${GithubOptions[@]}"
 do
     case $GithubOpt in
         "Create New Repo")
-            echo "You chose Create New Repo"
+								    create_new_repo
+            echo "Creating New Repo"
 												break
             ;;
         "Pull")
-            echo "You chose Pull"
+								    git pull origin master
+            echo "Pulling code from Repo"
 												break
             ;;
         "Push")
-            echo "you chose Push"
+								    add_check_commit
+            echo "Pushing Code"
 												break
             ;;
         "Quit")
@@ -94,41 +151,7 @@ done
     esac
 				
 done
-#add_check_commit(){
-#git add .
-#				git status
-#				commitcheck="n"
-#				while [ "$commitcheck" == n ]; do
-##				// -n is saying do not put a newline afterwards
-#				echo -n " Does this look good? (y/n): "
-#				read ANSWER
-#				commitcheck=`echo $ANSWER | tr [:upper:] [:lower:] | cut -c 1`
-#				if [ "$commitcheck" == n ]; then
-#						echo -e "Enter file to remove:"
-#						read file
-#						git reset HEAD $file
-#						git status
-#			 else 
-#						echo -e "Please enter a commit message: "
-#						read commitmessage
-#						git commit -m "$commitmessage"
-#						echo -e "Enter the branch you want to push to: "
-#						read branch
-#						echo "Pushing the commit"
-#						git push origin $branch
-#				fi
-#				done
-#}
-#
-#help() {
-#cat help.txt
-#}
-#
-#if [ "$1" == -h ]; then
-# help
-#	exit 0
-#	fi
-#
+
 #	openingmessage() {
 #	echo  "Where would you like to push/commit code to today? :"
 #	echo -e "1. Github"
