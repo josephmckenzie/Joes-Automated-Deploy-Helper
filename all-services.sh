@@ -99,7 +99,7 @@ do
     case $opt in
         "Github")
            
-										    GithubOptions=("Create New Repo" "Pull" "Push" "Quit")
+										    GithubOptions=("Create New Repo" "Pull" "Push" "Help" "Quit")
 select GithubOpt in "${GithubOptions[@]}"
 do
     case $GithubOpt in
@@ -118,6 +118,11 @@ do
             echo "Pushing Code"
 												break
             ;;
+									"Help")
+									  echo "Displaying Help"
+											help
+											break
+											;;
         "Quit")
             break
             ;;
@@ -128,7 +133,7 @@ done
 												break
             ;;
         "Heroku")
-                    HerokuOptions=("Create New App" "Push" "Config Vars" "Quit")
+                    HerokuOptions=("Create New App" "Push" "Config Vars" "Help" "Quit")
 select HerokuOpt in "${HerokuOptions[@]}"
 do
     case $HerokuOpt in
@@ -147,6 +152,11 @@ do
             echo "Adding Config Variables"
 												break
             ;;
+									"Help")
+									 echo "Displying Help"
+										help
+										break
+										;;
         "Quit")
             break
             ;;
@@ -167,7 +177,7 @@ do
 												break
             ;;
         "IAM Config")
- AmazonOptions=("New IAM user" "New IAM role" "IAM policies" "Quit")
+ AmazonOptions=("New IAM user" "New IAM role" "IAM policies" "Help" "Quit")
 select AmazonOpt in "${AmazonOptions[@]}"
 do
     case $AmazonOpt in
@@ -186,6 +196,11 @@ do
             echo "you chose IAM policies"
 												break
             ;;
+									"Help")
+												echo "Displaying Help"
+												help
+												break
+												;;
         "Quit")
             break
             ;;
@@ -206,6 +221,7 @@ break
 									"Help")
 									   help
 									   echo "Displaying Help"
+												break
 												;;
         "Quit")
             break
