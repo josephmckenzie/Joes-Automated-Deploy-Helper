@@ -73,12 +73,23 @@
       done
     }
     Heroku_add_config(){
+				  echo "Please enter your app name"
+						read APPNAME
       echo "Please add a Config Variables key: "
       read -r configkey
       echo "Please enter a Config Variables value: "
       read -r envvconfigvalue
-      heroku config:set "$configkey"="$envvconfigvalue"
+      heroku config:set --app "$APPNAME" "$configkey"="$envvconfigvalue"
     }
+				
+				Heroku_remove_config(){
+				echo "Please enter your app name"
+				read APPNAME
+				heroku config --app "$APPNAME"
+				echo "Please add a Config Variable to delete: "
+				read -r configkey
+				heroku config:unset --app "$APPNAME" "$configkey"
+		 }
 
     help() {
       cat help.txt
@@ -143,14 +154,50 @@
                 echo "Creating new Heroku app"
                 break
                 ;;
+														"App info")
+														echo "Please enter your app name"
+														read HerokuAppName
+														heroku info --app "$HerokuAppName"
+														break
+														;;
               "Push")
                 Heroku_add_check_commit
                 echo "Pushing Code"
                 break
                 ;;
               "Config Vars")
-                Heroku_add_config
-                echo "Adding Config Variables"
+																				HerokuConfigOptions=("Current Config vars" "Add new Config var" "Delete Config var" "Help" "Quit")
+																select HerokuConfigOpt in "${HerokuConfigOptions[@]}"
+																do
+																		case $HerokuConfigOpt in
+																				"Current Config vars")
+																						echo "Please enter your app name"
+																						read HEROKUAPP
+																						heroku config --app "$HEROKUAPP"
+																						echo "Current Config vars"
+																						break
+																						;;
+																				"Add new Config var")
+																						Heroku_add_config
+																						echo "Adding Config variable"
+																						break
+																						;;
+																				"Delete Config var")
+																						Heroku_remove_config
+																						echo "Removing Config variable"
+																						break
+																						;;
+																				"Help")
+																						echo "Displaying Help"
+																						help
+																						break
+																						;;
+																				"Quit")
+																						break
+																						;;
+																				*) echo invalid option;;
+																		esac
+																done
                 break
                 ;;
 														"View Logs")
