@@ -127,7 +127,7 @@
               "Push")
                 Github_add_check_commit
                 echo "Pushing Code"
-                break
+               
                 ;;
               "Help")
                 echo "Displaying Help"
