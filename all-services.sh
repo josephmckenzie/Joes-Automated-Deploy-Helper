@@ -133,11 +133,12 @@
           break
           ;;
         "Heroku")
-          HerokuOptions=("Create New App" "Push" "Config Vars" "Help" "Quit")
+          HerokuOptions=("Create New App" "Push" "Config Vars" "View Logs" "Help" "Quit")
           select HerokuOpt in "${HerokuOptions[@]}"
           do
             case $HerokuOpt in
               "Create New App")
+														  echo "Please enter a name for your new app"
                 Heroku_create_app
                 echo "Creating new Heroku app"
                 break
@@ -152,6 +153,12 @@
                 echo "Adding Config Variables"
                 break
                 ;;
+														"View Logs")
+														echo "Please enter your app name"
+														read HerokuAppName
+														heroku logs --app "$HerokuAppName"
+														break
+														;;
               "Help")
                 echo "Displying Help"
                 help
