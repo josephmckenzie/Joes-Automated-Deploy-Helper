@@ -150,20 +150,20 @@ Amazon_Menu_Options() {
               "Create New Repo")
                 Create_new_repo
                 echo "Creating New Repo"
-#                break
-																Github_Menu_Options
+                break
+																
                 ;;
               "Pull")
                 git pull origin master
                 echo "Pulling code from Repo"
-#                break
-																Github_Menu_Options
+                break
+																
                 ;;
               "Push")
                 Github_add_check_commit
                 echo "Pushing Code"
-#                break
-                Github_Menu_Options
+                break
+                
                 ;;
               "Help")
                 echo "Displaying Help"
@@ -176,7 +176,7 @@ Amazon_Menu_Options() {
               *) echo invalid option;;
             esac
           done
-          break 2
+          Main_Menu_Options
           ;;
         "Heroku")
           HerokuOptions=("Current Apps" "Open App in browser" "Create New App" "Push" "Config Vars" "View Logs" "Help" "Quit")
