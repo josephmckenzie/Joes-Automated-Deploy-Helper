@@ -143,7 +143,7 @@ Amazon_Menu_Options() {
     do
       case $opt in
         "Github")
-          GithubOptions=("Create New Repo" "Pull" "Push" "Help" "Quit")
+          GithubOptions=("Create New Repo" "Pull" "Push" "Help" "Main Menu" "Quit")
           select GithubOpt in "${GithubOptions[@]}"
           do
             case $GithubOpt in
@@ -165,13 +165,16 @@ Amazon_Menu_Options() {
                 break
                 
                 ;;
+														"Main Menu")
+														  break
+                ;;														
               "Help")
                 echo "Displaying Help"
                 help
                 break
                 ;;
               "Quit")
-                break
+                break 2
                 ;;
               *) echo invalid option;;
             esac
@@ -186,35 +189,35 @@ Amazon_Menu_Options() {
 												  "Current Apps")
 														echo "Current List of your apps"
 														heroku apps
-#														break
-														Heroku_Menu_Options
+														break
+														
 														;;
 														"Open App in browser")
 														echo "Please enter an app name"
 														read HerokuAppName
 														heroku open --app "$HerokuAppName"
-#														break
-														Heroku_Menu_Options
+														break
+														
 														;;
               "Create New App")
 														  echo "Please enter a name for your new app"
                 Heroku_create_app
                 echo "Creating new Heroku app"
-#                break
-																Heroku_Menu_Options
+                break
+																
                 ;;
 														"App info")
 														echo "Please enter your app name"
 														read HerokuAppName
 														heroku info --app "$HerokuAppName"
-#														break
-														Heroku_Menu_Options
+														break
+														
 														;;
               "Push")
                 Heroku_add_check_commit
                 echo "Pushing Code"
-#                break
-																Heroku_Menu_Options
+                break
+																
                 ;;
               "Config Vars")
 																				HerokuConfigOptions=("Current Config vars" "Add new Config var" "Delete Config var" "Help" "Quit")
@@ -258,8 +261,8 @@ Amazon_Menu_Options() {
 														echo "Please enter your app name"
 														read HerokuAppName
 														heroku logs --app "$HerokuAppName"
-#														break
-														Heroku_Menu_Options
+														break
+														
 														;;
               "Help")
                 echo "Displying Help"
@@ -273,7 +276,7 @@ Amazon_Menu_Options() {
             esac
 
           done
-          Main_Menu_Options
+          Heroku_Menu_Options
 										
           ;;
         "Amazon")
