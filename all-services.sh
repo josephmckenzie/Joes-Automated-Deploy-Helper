@@ -105,40 +105,77 @@ if [ "$1" == -h ]; then
 fi
 
 Main_Menu_Options() {
-echo -e ""
-menunumber=0
-for fn in ${options[@]}; do
- ((menunumber++))
- echo "$menunumber) $fn"
-done
+echo -e "\n1) Github" 
+echo "2) Heroku" 
+echo "3) Amazon" 
+echo "4) Help" 
+echo "5) Quit"
+#echo -e ""
+#menunumber=0
+#for fn in ${options[@]}; do
+# ((menunumber++))
+# echo "$menunumber) $fn"
+#done
 }
 
 Github_Menu_Options() {
-echo -e ""
-menunumber=0
-for fn in ${GithubOptions[@]}; do
- ((menunumber++))
- echo "$menunumber) $fn"
-done
+echo -e "\n1) Create New Repo" 
+echo "2) Pull" 
+echo "3) Push" 
+echo "4) Help" 
+echo "5) Main Menu" 
+echo "6) Quit"
+#echo -e ""
+
+#menunumber=0
+#for fn in ${GithubOptions[@]}; do
+# ((menunumber++))
+# echo "$menunumber) $fn"
+#done
 }
 
 Heroku_Menu_Options() {
-echo -e ""
-menunumber=0
-for fn in ${HerokuOptions[@]}; do
- ((menunumber++))
- echo "$menunumber) $fn"
-done
+echo -e "\n1) Current Apps"
+echo "2) Open App in browser"
+echo "3) Create New App"
+echo "4) Push"
+echo "5) Config Vars"
+echo "6) View Logs"
+echo "7) Help"
+echo "8) Main Menu"
+echo "9) Quit"
+#echo -e ""
+#hmenunumber=0
+#for fn in ${HerokuOptions[@]}; do
+# ((hmenunumber++))
+# echo "$hmenunumber) $fn"
+#done
 }
 
-Amazon_Menu_Options() {
-echo -e ""
-menunumber=0
-for fn in ${AmazonOptions[@]}; do
- ((menunumber++))
- echo "$menunumber) $fn"
-done
+Heroku_Var_Menu_Options() {
+echo "1) Current Config vars"
+echo "2) Add new Config var"
+echo "3) Delete Config var"
+echo "4) Help"
+echo "5) Heroku Main Menu"
+echo "6) Main Menu"
+echo "7) Quit"
+#echo -e ""
+#hvmenunumber=0
+#for fn2 in ${HerokuConfigOptions[@]}; do
+# ((hvmenunumber++))
+# echo "$hvmenunumber) $fn2"
+#done
 }
+
+#Amazon_Menu_Options() {
+##echo -e ""
+##menunumber=0
+##for fn in ${AmazonOptions[@]}; do
+## ((menunumber++))
+## echo "$menunumber) $fn"
+##done
+#}
 
   #PS3 is a default prompt statment for bash PS3 is for
     PS3='Please enter your choice: '
@@ -165,25 +202,28 @@ done
                 Github_add_check_commit
                 echo "Pushing Code"
                 break
-                ;;
-														"Main Menu")
-														  break
-                ;;														
+                ;;									
               "Help")
                 echo "Displaying Help"
                 help
-                break
+                break 2
                 ;;
+														"Main Menu")
+														 echo "Should echo br 1 next"
+																break
+																;;		
               "Quit")
+														  echo "Quit Program (br 2)"
                 break 2
                 ;;
               *) echo invalid option;;
             esac
           done
+										echo "Br 1"
           Main_Menu_Options
           ;;
         "Heroku")
-          HerokuOptions=("Current Apps" "Open App in browser" "Create New App" "Push" "Config Vars" "View Logs" "Help" "Quit")
+          HerokuOptions=("Current Apps" "Open App in browser" "Create New App" "Push" "Config Vars" "View Logs" "Help" "Main Menu" "Quit")
           select HerokuOpt in "${HerokuOptions[@]}"
           do
             case $HerokuOpt in
@@ -216,7 +256,7 @@ done
                 break
                 ;;
               "Config Vars")
-																				HerokuConfigOptions=("Current Config vars" "Add new Config var" "Delete Config var" "Help" "Quit")
+																				HerokuConfigOptions=("Current Config vars" "Add new Config var" "Delete Config var" "Help" "Heroku Main Menu" "Main Menu" "Quit")
 																select HerokuConfigOpt in "${HerokuConfigOptions[@]}"
 																do
 																		case $HerokuConfigOpt in
@@ -225,33 +265,46 @@ done
 																						read HEROKUAPP
 																						heroku config --app "$HEROKUAPP"
 																						echo "Current Config vars"
-																						break 2
-#																						Heroku_Menu_Options
+#																					  break
+																							echo "should show current menu again, thus keeping in the loop"
+																						Heroku_Var_Menu_Options
 																						;;
 																				"Add new Config var")
 																						Heroku_add_config
 																						echo "Adding Config variable"
-																						break
-#																						Heroku_Menu_Options
+#																						break
+																						echo "should show current menu again, thus keeping in the loop"
+																						Heroku_Var_Menu_Options
 																						;;
 																				"Delete Config var")
 																						Heroku_remove_config
 																						echo "Removing Config variable"
-																						break
-#																						Heroku_Menu_Options
+#																						break
+			                   echo "should show current menu again, thus keeping in the loop"
+																						Heroku_Var_Menu_Options
 																						;;
 																				"Help")
 																						echo "Displaying Help"
 																						help
-																						break
+																						break 3
 																						;;
+																				"Heroku Main Menu")
+																				echo "Should echo br 1 next"
+																						break 
+																						;;
+																				"Main Menu")
+																				echo "Should bring to main menu"
+																			  	break 2
+																				  ;;
 																				"Quit")
-																						break
+																				echo "Should Quit program"
+																						break 3
 																						;;
 																				*) echo invalid option;;
 																		esac
-																done
-                break 
+																done 
+																echo "Br1"
+																Heroku_Menu_Options
                 ;;
 														"View Logs")
 														echo "Please enter your app name"
@@ -262,15 +315,21 @@ done
               "Help")
                 echo "Displying Help"
                 help
+                break 2
+                ;;
+              "Main Menu")
+														echo "Should echo br 1 next"
                 break
                 ;;
-              "Quit")
-                break
-                ;;
+														"Quit")
+														echo "Should exit program"
+														break 2
+														;;
               *) echo invalid option;;
             esac
           done
-          Heroku_Menu_Options
+										echo "Br 1"
+          Main_Menu_Options
           ;;
         "Amazon")
           AmazonOptions=("IAM Config" "AWS Config" "Lambda" "S3 Bucket" "Help" "Quit")
