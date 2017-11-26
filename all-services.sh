@@ -101,7 +101,7 @@
     fi
 
 Main_Menu_Options() {
-		echo "1) ${options[0]}"
+		echo -e "\n1) ${options[0]}"
 		echo "2) ${options[1]}"
 		echo "3) ${options[2]}"
 		echo "4) ${options[3]}"
@@ -109,14 +109,33 @@ Main_Menu_Options() {
 }
 
 Github_Menu_Options() {
-  echo "1) ${GithubOptions[0]}"
+  echo -e "\n1) ${GithubOptions[0]}"
 		echo "2) ${GithubOptions[1]}"
 		echo "3) ${GithubOptions[2]}"
 		echo "4) ${GithubOptions[3]}"
 		echo "5) ${GithubOptions[4]}"
 }
+Heroku_Menu_Options() {
+  echo -e "\n1) ${HerokuOptions[0]}"
+		echo "2) ${HerokuOptions[1]}"
+		echo "3) ${HerokuOptions[2]}"
+		echo "4) ${HerokuOptions[3]}"
+		echo "5) ${HerokuOptions[4]}"
+		echo "6) ${HerokuOptions[5]}"
+		echo "7) ${HerokuOptions[6]}"
+		echo "8) ${HerokuOptions[7]}"
+}
 
-
+Amazon_Menu_Options() {
+  echo -e "\n1) ${AmazonOptions[0]}"
+		echo "2) ${AmazonOptions[1]}"
+		echo "3) ${AmazonOptions[2]}"
+		echo "4) ${AmazonOptions[3]}"
+		echo "5) ${AmazonOptions[4]}"
+		echo "6) ${AmazonOptions[5]}"
+		echo "7) ${AmazonOptions[6]}"
+		echo "8) ${AmazonOptions[7]}"
+}
   #PS3 is a default prompt statment for bash PS3 is for
     PS3='Please enter your choice: '
     options=("Github" "Heroku" "Amazon" "Help" "Quit")
@@ -124,7 +143,6 @@ Github_Menu_Options() {
     do
       case $opt in
         "Github")
-
           GithubOptions=("Create New Repo" "Pull" "Push" "Help" "Quit")
           select GithubOpt in "${GithubOptions[@]}"
           do
@@ -161,37 +179,42 @@ Github_Menu_Options() {
           break
           ;;
         "Heroku")
-          HerokuOptions=("Current Apps" "Open App" "Create New App" "Push" "Config Vars" "View Logs" "Help" "Quit")
+          HerokuOptions=("Current Apps" "Open App in browser" "Create New App" "Push" "Config Vars" "View Logs" "Help" "Quit")
           select HerokuOpt in "${HerokuOptions[@]}"
           do
             case $HerokuOpt in
 												  "Current Apps")
 														echo "Current List of your apps"
 														heroku apps
-														break
+#														break
+														Heroku_Menu_Options
 														;;
 														"Open App in browser")
 														echo "Please enter an app name"
 														read HerokuAppName
 														heroku open --app "$HerokuAppName"
-														break
+#														break
+														Heroku_Menu_Options
 														;;
               "Create New App")
 														  echo "Please enter a name for your new app"
                 Heroku_create_app
                 echo "Creating new Heroku app"
-                break
+#                break
+																Heroku_Menu_Options
                 ;;
 														"App info")
 														echo "Please enter your app name"
 														read HerokuAppName
 														heroku info --app "$HerokuAppName"
-														break
+#														break
+														Heroku_Menu_Options
 														;;
               "Push")
                 Heroku_add_check_commit
                 echo "Pushing Code"
-                break
+#                break
+																Heroku_Menu_Options
                 ;;
               "Config Vars")
 																				HerokuConfigOptions=("Current Config vars" "Add new Config var" "Delete Config var" "Help" "Quit")
@@ -203,17 +226,20 @@ Github_Menu_Options() {
 																						read HEROKUAPP
 																						heroku config --app "$HEROKUAPP"
 																						echo "Current Config vars"
-																						break
+#																						break
+																						Heroku_Menu_Options
 																						;;
 																				"Add new Config var")
 																						Heroku_add_config
 																						echo "Adding Config variable"
 																						break
+#																						Heroku_Menu_Options
 																						;;
 																				"Delete Config var")
 																						Heroku_remove_config
 																						echo "Removing Config variable"
 																						break
+#																						Heroku_Menu_Options
 																						;;
 																				"Help")
 																						echo "Displaying Help"
@@ -232,7 +258,8 @@ Github_Menu_Options() {
 														echo "Please enter your app name"
 														read HerokuAppName
 														heroku logs --app "$HerokuAppName"
-														break
+#														break
+														Heroku_Menu_Options
 														;;
               "Help")
                 echo "Displying Help"
@@ -256,13 +283,13 @@ Github_Menu_Options() {
               "AWS Config")
                 aws configure
                 echo "Configuring AWS"
-                break
+                Amazon_Menu_Options
                 ;;
               "IAM Config")
-                AmazonOptions=("New CLI User" "IAM policies" "IAM Roles" "Help" "Quit")
-                select AmazonOpt in "${AmazonOptions[@]}"
+                AmazonIAMOptions=("New CLI User" "IAM policies" "IAM Roles" "Help" "Quit")
+                select AmazonIAMOpt in "${AmazonIAMOptions[@]}"
                 do
-                  case $AmazonOpt in
+                  case $AmazonIAMOpt in
                     "New CLI User")
                       echo "Please enter a name for your new IAM user"
                       read -r IAMUSER
