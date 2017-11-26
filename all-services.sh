@@ -100,6 +100,21 @@
       exit 0
     fi
 
+Main_Menu_Options() {
+		echo "1) ${options[0]}"
+		echo "2) ${options[1]}"
+		echo "3) ${options[2]}"
+		echo "4) ${options[3]}"
+		echo "5) ${options[0]}"
+}
+
+Github_Menu_Options() {
+  echo "1) ${GithubOptions[0]}"
+		echo "2) ${GithubOptions[1]}"
+		echo "3) ${GithubOptions[2]}"
+		echo "4) ${GithubOptions[3]}"
+		echo "5) ${GithubOptions[0]}"
+}
 
 
   #PS3 is a default prompt statment for bash PS3 is for
@@ -117,17 +132,20 @@
               "Create New Repo")
                 Create_new_repo
                 echo "Creating New Repo"
-                break
+#                break
+																Github_Menu_Options
                 ;;
               "Pull")
                 git pull origin master
                 echo "Pulling code from Repo"
-                break
+#                break
+																Github_Menu_Options
                 ;;
               "Push")
                 Github_add_check_commit
                 echo "Pushing Code"
-               
+#                break
+                Github_Menu_Options
                 ;;
               "Help")
                 echo "Displaying Help"
@@ -139,15 +157,25 @@
                 ;;
               *) echo invalid option;;
             esac
-
           done
           break
           ;;
         "Heroku")
-          HerokuOptions=("Create New App" "Push" "Config Vars" "View Logs" "Help" "Quit")
+          HerokuOptions=("Current Apps" "Open App" "Create New App" "Push" "Config Vars" "View Logs" "Help" "Quit")
           select HerokuOpt in "${HerokuOptions[@]}"
           do
             case $HerokuOpt in
+												  "Current Apps")
+														echo "Current List of your apps"
+														heroku apps
+														break
+														;;
+														"Open App in browser")
+														echo "Please enter an app name"
+														read HerokuAppName
+														heroku open --app "$HerokuAppName"
+														break
+														;;
               "Create New App")
 														  echo "Please enter a name for your new app"
                 Heroku_create_app
@@ -387,11 +415,9 @@
                       echo "Please enter a Env Value"
                       read -r ENVVALUE
                       aws lambda update-function-configuration --function-name "$LAMBDANAME" --environment Variables={"$ENVKEY"="$ENVVALUE"}
-
                       echo "Updating Enviromental Variables"
                       break
                       ;;
-
                     "Help")
                       echo "Displying Help"
                       help
@@ -402,13 +428,87 @@
                       ;;
                     *) echo invalid option;;
                   esac
-
                 done
-
                 break
                 ;;
               "S3 Bucket")
-                echo "you chose S3 Bucket"
+                S3BucketOptions=("Create New S3 Bucket" "Update S3 Bucket" "Delete S3 Bucket" "Help" "Quit")
+                select S3BucketOpt in "${S3BucketOptions[@]}"
+                do
+                  case $S3BucketOpt in
+                    "Create New S3 Bucket")
+                      echo "Please enter a bucket name"
+																						read S3BUCKETNAME
+																						aws s3 mb s3://"$S3BUCKETNAME"
+                      echo "Creating new S3 Bucket"
+                      break
+                      ;;
+                    "Update S3 Bucket")
+																						echo "Please choose an option"
+																						S3BucketUploadOptions=("Upload whole folder" "Upload single file" "Help" "Quit")
+																						select S3BucketUploadOpt in "${S3BucketUploadOptions[@]}"
+																						do
+																								case $S3BucketUploadOpt in
+																										"Upload whole folder")
+																										  echo "Date Created               Bucket Name"
+																				        aws s3 ls
+																												echo "Please enter your S3Bucket name"
+																						      read S3BUCKETNAME
+																												 aws s3 sync . s3://"$S3BUCKETNAME"/
+																												echo "Uploading to S3 Bucket"
+																												break
+																												;;
+																										"Upload single file")
+																										  echo "Date Created               Bucket Name"
+																				        aws s3 ls
+																												echo "Please enter your S3Bucket name"
+																						      read S3BUCKETNAME
+																												echo "Please enter the name of the file you wish to upload"
+																												read FILENAMETOUPLOAD
+																												aws s3 cp "$FILENAMETOUPLOAD" s3://"$S3BUCKETNAME"
+																												echo "Uploading to S3 Bucket"
+																												break
+																												;;
+																										"Help")
+																												echo "Displaying Help"
+																												help
+																												break
+																												;;
+																										"Quit")
+																												break
+																												;;
+																										*) echo invalid option;;
+																								esac
+																						done   
+																				  break
+                      ;;
+                    "Delete S3 Bucket")
+																				 echo "Date Created               Bucket Name"
+																				 aws s3 ls
+                     echo "Please enter a bucket name to delete"
+																					read S3BUCKETNAME
+																					echo "Caution are you sure you want to delete your bucket and all its contents? (Y/n)"
+																					read S3DELETE
+																					if [[ "$S3DELETE" == [Yy] ]]; then
+																							aws s3 rb s3://"$S3BUCKETNAME" --force
+																					else 
+																					  echo "You chose not delete your bucket"
+																					  exit 0
+																				 fi
+																					echo "Deleting S3 Bucket"
+                     break
+                      ;;
+                    "Help")
+                      echo "Displaying Help"
+                      help
+                      break
+                      ;;
+                    "Quit")
+                      break
+                      ;;
+                    *) echo invalid option;;
+                  esac
+                done
                 break
                 ;;
               "Help")
@@ -421,18 +521,18 @@
                 ;;
               *) echo invalid option;;
             esac
-
           done
           break
           ;;
         "Help")
           echo "You chose the Readme"
+										help
           break
+#									Main_Menu_Options
           ;;
         "Quit")
           break
           ;;
         *) echo invalid option;;
       esac
-
     done
