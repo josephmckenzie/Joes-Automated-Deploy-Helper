@@ -105,7 +105,7 @@ Main_Menu_Options() {
 		echo "2) ${options[1]}"
 		echo "3) ${options[2]}"
 		echo "4) ${options[3]}"
-		echo "5) ${options[0]}"
+		echo "5) ${options[4]}"
 }
 
 Github_Menu_Options() {
@@ -113,7 +113,7 @@ Github_Menu_Options() {
 		echo "2) ${GithubOptions[1]}"
 		echo "3) ${GithubOptions[2]}"
 		echo "4) ${GithubOptions[3]}"
-		echo "5) ${GithubOptions[0]}"
+		echo "5) ${GithubOptions[4]}"
 }
 
 
