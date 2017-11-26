@@ -176,7 +176,7 @@ Amazon_Menu_Options() {
               *) echo invalid option;;
             esac
           done
-          break
+          break 2
           ;;
         "Heroku")
           HerokuOptions=("Current Apps" "Open App in browser" "Create New App" "Push" "Config Vars" "View Logs" "Help" "Quit")
