@@ -163,7 +163,7 @@ Amazon_Menu_Options() {
                 Github_add_check_commit
                 echo "Pushing Code"
 #                break
-                Github_Menu_Options
+                break 2
                 ;;
               "Help")
                 echo "Displaying Help"
@@ -176,7 +176,7 @@ Amazon_Menu_Options() {
               *) echo invalid option;;
             esac
           done
-          
+          Github_Menu_Options
           ;;
         "Heroku")
           HerokuOptions=("Current Apps" "Open App in browser" "Create New App" "Push" "Config Vars" "View Logs" "Help" "Quit")
