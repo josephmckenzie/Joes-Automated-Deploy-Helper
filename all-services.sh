@@ -104,6 +104,7 @@ fi
 
 Main_Menu_Options() {
 echo -e ""
+menunumber=0
 for fn in ${options[@]}; do
  ((menunumber++))
  echo "$menunumber) $fn"
