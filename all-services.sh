@@ -226,8 +226,8 @@ Amazon_Menu_Options() {
 																						read HEROKUAPP
 																						heroku config --app "$HEROKUAPP"
 																						echo "Current Config vars"
-#																						break
-																						Heroku_Menu_Options
+																						break 2
+#																						Heroku_Menu_Options
 																						;;
 																				"Add new Config var")
 																						Heroku_add_config
@@ -252,7 +252,7 @@ Amazon_Menu_Options() {
 																				*) echo invalid option;;
 																		esac
 																done
-                break
+                break 
                 ;;
 														"View Logs")
 														echo "Please enter your app name"
@@ -273,7 +273,8 @@ Amazon_Menu_Options() {
             esac
 
           done
-          break
+          Main_Menu_Options
+										
           ;;
         "Amazon")
           AmazonOptions=("IAM Config" "AWS Config" "Lambda" "S3 Bucket" "Help" "Quit")
