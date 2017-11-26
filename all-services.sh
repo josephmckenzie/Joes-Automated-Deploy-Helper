@@ -1,4 +1,6 @@
 #!/bin/bash
+##This script was created by Joseph Mckenzie.
+##If you enjoy this script and it helps, sweet you can view more of code at http://github.com/josephmckenzie
 
 Create_new_repo() {
 		echo "Please enter your profile name: "
@@ -109,37 +111,35 @@ for fn in ${options[@]}; do
  ((menunumber++))
  echo "$menunumber) $fn"
 done
-	
 }
 
 Github_Menu_Options() {
-		echo -e "\n1) ${GithubOptions[0]}"
-		echo "2) ${GithubOptions[1]}"
-		echo "3) ${GithubOptions[2]}"
-		echo "4) ${GithubOptions[3]}"
-		echo "5) ${GithubOptions[4]}"
+echo -e ""
+menunumber=0
+for fn in ${GithubOptions[@]}; do
+ ((menunumber++))
+ echo "$menunumber) $fn"
+done
 }
 
 Heroku_Menu_Options() {
-		echo -e "\n1) ${HerokuOptions[0]}"
-		echo "2) ${HerokuOptions[1]}"
-		echo "3) ${HerokuOptions[2]}"
-		echo "4) ${HerokuOptions[3]}"
-		echo "5) ${HerokuOptions[4]}"
-		echo "6) ${HerokuOptions[5]}"
-		echo "7) ${HerokuOptions[6]}"
-		echo "8) ${HerokuOptions[7]}"
+echo -e ""
+menunumber=0
+for fn in ${HerokuOptions[@]}; do
+ ((menunumber++))
+ echo "$menunumber) $fn"
+done
 }
+
 Amazon_Menu_Options() {
-		echo -e "\n1) ${AmazonOptions[0]}"
-		echo "2) ${AmazonOptions[1]}"
-		echo "3) ${AmazonOptions[2]}"
-		echo "4) ${AmazonOptions[3]}"
-		echo "5) ${AmazonOptions[4]}"
-		echo "6) ${AmazonOptions[5]}"
-		echo "7) ${AmazonOptions[6]}"
-		echo "8) ${AmazonOptions[7]}"
+echo -e ""
+menunumber=0
+for fn in ${AmazonOptions[@]}; do
+ ((menunumber++))
+ echo "$menunumber) $fn"
+done
 }
+
   #PS3 is a default prompt statment for bash PS3 is for
     PS3='Please enter your choice: '
     options=("Github" "Heroku" "Amazon" "Help" "Quit")
