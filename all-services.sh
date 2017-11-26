@@ -1,122 +1,126 @@
 #!/bin/bash
 
+Create_new_repo() {
+		echo "Please enter your profile name: "
+		read -r Github_profilename
+		echo "Please enter a new repo name: "
+		read -r Guthub_repo_name
+		curl --user "$Github_profilename" https://api.github.com/user/repos -d "{\"name\":\"$Guthub_repo_name\"}"
+		echo "$Guthub_repo_name" >> README.md
+		git init
+		git add README.md
+		echo "Please enter a commit message: "
+		read -r Github_new_repo_message
+		git commit -m "$Github_new_repo_message"
+		git remote add origin https://github.com/"$Github_profilename"/"$Guthub_repo_name".git
+		git push -u origin master
+}
 
-    Create_new_repo() {
-      echo "Please enter your profile name: "
-      read -r Github_profilename
-      echo "Please enter a new repo name: "
-      read -r Guthub_repo_name
-      curl --user "$Github_profilename" https://api.github.com/user/repos -d "{\"name\":\"$Guthub_repo_name\"}"
-      echo "$Guthub_repo_name" >> README.md
-      git init
-      git add README.md
-      echo "Please enter a commit message: "
-      read -r Github_new_repo_message
-      git commit -m "$Github_new_repo_message"
-      git remote add origin https://github.com/"$Github_profilename"/"$Guthub_repo_name".git
-      git push -u origin master
-    }
-    Github_add_check_commit(){
-      git add .
-      git status
-      Github_commit_check="n"
-      while [ "$Github_commit_check" == n ]; do
-        #-n is saying do not put a newline afterwards
-        echo -n " Does this look good? (y/n): "
-        read -r ANSWER
-        Github_commit_check=$(echo "$ANSWER" | tr '[:upper:]' '[:lower:]' | cut -c 1)
-        if [ "$Github_commit_check" == n ]; then
-          echo -e "Enter file to remove:"
-          read -r Github_file
-          git reset HEAD "$Github_file"
-          git status
-        else
-          echo -e "Please enter a commit message: "
-          read -r Github_commit_message
-          git commit -m "$Github_commit_message"
-          echo -e "Enter the branch you want to push to: "
-          read -r Github_branch
-          echo "Pushing the commit"
-          git push origin "$Github_branch"
-        fi
-      done
-    }
+Github_add_check_commit(){
+		git add .
+		git status
+		Github_commit_check="n"
+		while [ "$Github_commit_check" == n ]; do
+				#-n is saying do not put a newline afterwards
+				echo -n " Does this look good? (y/n): "
+				read -r ANSWER
+				Github_commit_check=$(echo "$ANSWER" | tr '[:upper:]' '[:lower:]' | cut -c 1)
+				if [ "$Github_commit_check" == n ]; then
+						echo -e "Enter file to remove:"
+						read -r Github_file
+						git reset HEAD "$Github_file"
+						git status
+				else
+						echo -e "Please enter a commit message: "
+						read -r Github_commit_message
+						git commit -m "$Github_commit_message"
+						echo -e "Enter the branch you want to push to: "
+						read -r Github_branch
+						echo "Pushing the commit"
+						git push origin "$Github_branch"
+				fi
+		done
+}
 
-    Heroku_create_app() {
-      echo "Please enter a new for your app: "
-      read -r HerokuAppName
-      heroku create "$HerokuAppName"
-    }
-    Heroku_add_check_commit(){
-      git add .
-      git status
-      Github_commit_message="n"
-      while [ "$Github_commit_message" == n ]; do
-      #				// -n is saying do not put a newline afterwards
-        echo -n " Does this look good? (y/n): "
-        read -r ANSWER
-        Github_commit_message=$(echo "$ANSWER" | tr '[:upper:]' '[:lower:]' | cut -c 1)
-        if [ "$Github_commit_message" == n ]; then
-          echo -e "Enter file to remove:"
-          read -r file
-          git reset HEAD "$file"
-          git status
-        else
-          echo -e "Please enter a commit message: "
-          read -r Heroku_commit_message
-          git commit -m "$Heroku_commit_message"
-          echo -e "Enter the branch you want to push to: "
-          read -r Github_branch
-          echo "Pushing the commit"
-          git push heroku "$Github_branch"
-        fi
-      done
-    }
-    Heroku_add_config(){
-				  echo "Please enter your app name"
-						read APPNAME
-      echo "Please add a Config Variables key: "
-      read -r configkey
-      echo "Please enter a Config Variables value: "
-      read -r envvconfigvalue
-      heroku config:set --app "$APPNAME" "$configkey"="$envvconfigvalue"
-    }
-				
-				Heroku_remove_config(){
-				echo "Please enter your app name"
-				read APPNAME
-				heroku config --app "$APPNAME"
-				echo "Please add a Config Variable to delete: "
-				read -r configkey
-				heroku config:unset --app "$APPNAME" "$configkey"
-		 }
+Heroku_create_app() {
+		echo "Please enter a new for your app: "
+		read -r HerokuAppName
+		heroku create "$HerokuAppName"
+}
 
-    help() {
-      cat help.txt
-    }
+Heroku_add_check_commit(){
+		git add .
+		git status
+		Github_commit_message="n"
+		while [ "$Github_commit_message" == n ]; do
+		#				// -n is saying do not put a newline afterwards
+				echo -n " Does this look good? (y/n): "
+				read -r ANSWER
+				Github_commit_message=$(echo "$ANSWER" | tr '[:upper:]' '[:lower:]' | cut -c 1)
+				if [ "$Github_commit_message" == n ]; then
+						echo -e "Enter file to remove:"
+						read -r file
+						git reset HEAD "$file"
+						git status
+				else
+						echo -e "Please enter a commit message: "
+						read -r Heroku_commit_message
+						git commit -m "$Heroku_commit_message"
+						echo -e "Enter the branch you want to push to: "
+						read -r Github_branch
+						echo "Pushing the commit"
+						git push heroku "$Github_branch"
+				fi
+		done
+}
 
-    if [ "$1" == -h ]; then
-      help
-      exit 0
-    fi
+Heroku_add_config(){
+		echo "Please enter your app name"
+		read APPNAME
+		echo "Please add a Config Variables key: "
+		read -r configkey
+		echo "Please enter a Config Variables value: "
+		read -r envvconfigvalue
+		heroku config:set --app "$APPNAME" "$configkey"="$envvconfigvalue"
+}
+
+Heroku_remove_config(){
+echo "Please enter your app name"
+read APPNAME
+heroku config --app "$APPNAME"
+echo "Please add a Config Variable to delete: "
+read -r configkey
+heroku config:unset --app "$APPNAME" "$configkey"
+}
+
+help() {
+		cat help.txt
+}
+
+if [ "$1" == -h ]; then
+		help
+		exit 0
+fi
 
 Main_Menu_Options() {
-		echo -e "\n1) ${options[0]}"
-		echo "2) ${options[1]}"
-		echo "3) ${options[2]}"
-		echo "4) ${options[3]}"
-		echo "5) ${options[4]}"
+echo -e ""
+for fn in ${options[@]}; do
+ ((menunumber++))
+ echo "$menunumber) $fn"
+done
+	
 }
 
 Github_Menu_Options() {
-  echo -e "\n1) ${GithubOptions[0]}"
+		echo -e "\n1) ${GithubOptions[0]}"
 		echo "2) ${GithubOptions[1]}"
 		echo "3) ${GithubOptions[2]}"
 		echo "4) ${GithubOptions[3]}"
 		echo "5) ${GithubOptions[4]}"
 }
+
 Heroku_Menu_Options() {
-  echo -e "\n1) ${HerokuOptions[0]}"
+		echo -e "\n1) ${HerokuOptions[0]}"
 		echo "2) ${HerokuOptions[1]}"
 		echo "3) ${HerokuOptions[2]}"
 		echo "4) ${HerokuOptions[3]}"
@@ -125,9 +129,8 @@ Heroku_Menu_Options() {
 		echo "7) ${HerokuOptions[6]}"
 		echo "8) ${HerokuOptions[7]}"
 }
-
 Amazon_Menu_Options() {
-  echo -e "\n1) ${AmazonOptions[0]}"
+		echo -e "\n1) ${AmazonOptions[0]}"
 		echo "2) ${AmazonOptions[1]}"
 		echo "3) ${AmazonOptions[2]}"
 		echo "4) ${AmazonOptions[3]}"
@@ -151,19 +154,16 @@ Amazon_Menu_Options() {
                 Create_new_repo
                 echo "Creating New Repo"
                 break
-																
                 ;;
               "Pull")
                 git pull origin master
                 echo "Pulling code from Repo"
                 break
-																
                 ;;
               "Push")
                 Github_add_check_commit
                 echo "Pushing Code"
                 break
-                
                 ;;
 														"Main Menu")
 														  break
@@ -190,34 +190,29 @@ Amazon_Menu_Options() {
 														echo "Current List of your apps"
 														heroku apps
 														break
-														
 														;;
 														"Open App in browser")
 														echo "Please enter an app name"
 														read HerokuAppName
 														heroku open --app "$HerokuAppName"
 														break
-														
 														;;
               "Create New App")
 														  echo "Please enter a name for your new app"
                 Heroku_create_app
                 echo "Creating new Heroku app"
                 break
-																
                 ;;
 														"App info")
 														echo "Please enter your app name"
 														read HerokuAppName
 														heroku info --app "$HerokuAppName"
 														break
-														
 														;;
               "Push")
                 Heroku_add_check_commit
                 echo "Pushing Code"
                 break
-																
                 ;;
               "Config Vars")
 																				HerokuConfigOptions=("Current Config vars" "Add new Config var" "Delete Config var" "Help" "Quit")
@@ -262,7 +257,6 @@ Amazon_Menu_Options() {
 														read HerokuAppName
 														heroku logs --app "$HerokuAppName"
 														break
-														
 														;;
               "Help")
                 echo "Displying Help"
@@ -274,10 +268,8 @@ Amazon_Menu_Options() {
                 ;;
               *) echo invalid option;;
             esac
-
           done
           Heroku_Menu_Options
-										
           ;;
         "Amazon")
           AmazonOptions=("IAM Config" "AWS Config" "Lambda" "S3 Bucket" "Help" "Quit")
@@ -331,7 +323,6 @@ Amazon_Menu_Options() {
                             break
                             ;;
                           "S3")
-
                             echo "Creating S3 Policy"
                             break
                             ;;
@@ -345,12 +336,10 @@ Amazon_Menu_Options() {
                             ;;
                           *) echo invalid option;;
                         esac
-
                       done
                       break
                       ;;
                     "IAM Roles")
-
                       IAMROLESS=("Lambda" "S3" "Help" "Quit")
                       select IAMROLES in "${IAMROLESS[@]}"
                       do
@@ -365,7 +354,6 @@ Amazon_Menu_Options() {
                             break
                             ;;
                           "S3")
-
                             echo "Creating S3 Role"
                             break
                             ;;
@@ -379,7 +367,6 @@ Amazon_Menu_Options() {
                             ;;
                           *) echo invalid option;;
                         esac
-
                       done
                       break
                       ;;
@@ -393,13 +380,10 @@ Amazon_Menu_Options() {
                       ;;
                     *) echo invalid option;;
                   esac
-
                 done
                 break
                 ;;
               "Lambda")
-
-
                 LambdaOptions=("Create New Lambda Function" "Update Lambda Function" "Add/Update Enviromental Variables" "Help" "Quit")
                 select LambdaOpt in "${LambdaOptions[@]}"
                 do
