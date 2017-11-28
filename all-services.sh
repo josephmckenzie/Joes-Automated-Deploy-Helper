@@ -99,6 +99,23 @@ fi
 
 
 }
+
+INSTALLAWSCLI() {
+curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip"
+ if exists unzip; then
+			unzip awscli-bundle.zip
+			./awscli-bundle/install -b ~/bin/aws
+			echo $PATH | grep ~/bin
+			export PATH=~/bin:$PATH 
+	else
+	  if exists apt; then
+		   apt install unzip -y
+			else
+			  yum install unzip -y
+			fi
+ fi
+}
+
 Create_new_repo() {
 		echo "Please enter your profile name: "
 		read -r Github_profilename
@@ -440,6 +457,11 @@ echo "7) Quit"
           Main_Menu_Options
           ;;
         "Amazon")
+								 if exists aws; then
+									  echo "AWS CLI installed already"
+									else
+									  INSTALLAWSCLI
+									fi
           AmazonOptions=("IAM Config" "AWS Config" "Lambda" "S3 Bucket" "Help" "Quit")
           select AmazonOpt in "${AmazonOptions[@]}"
           do
