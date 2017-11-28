@@ -7,6 +7,98 @@ exists()
   command -v "$1" >/dev/null 2>&1
 }
 
+INSTALLGITCLI() {
+if [ "$(uname)" == "Darwin" ]; then
+			echo "Mac"
+			if exists brew; then
+					echo 'You have brew already installed'
+				else
+				 echo "installing needed Homebrew"
+					ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+     brew doctor
+				fi
+			brew install git
+elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+		dist=`grep DISTRIB_ID /etc/*-release | awk -F '=' '{print $2}'`
+		if [ "$dist" == "Ubuntu" ]; then
+		  echo "installing with apt"
+				if exists git; then
+					echo 'You have the git cli already installed'
+				else
+					sudo apt-get update
+					sudo apt-get upgrade
+					sudo apt-get install git
+				fi
+		else
+		  echo "Installing with yum"
+				if exists git; then
+					echo 'You have the git cli already installed'
+				else
+				 sudo yum upgrade
+     sudo yum install git
+				fi
+		fi
+elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW32_NT" ]; then
+echo "Win32"
+echo "Click the link and install from the installer"
+				https://git-for-windows.github.io/
+elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW64_NT" ]; then
+				# Do something under 64 bits Windows NT platform
+				echo "Click the link and install from the installer"
+				https://git-for-windows.github.io/
+				echo "Win64"
+fi
+}
+
+INSTALLHEROKUCLI() {
+if [ "$(uname)" == "Darwin" ]; then
+			echo "Mac"
+			if exists brew; then
+					echo 'You have brew already installed'
+				else
+				 echo "installing needed Homebrew"
+					ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+     brew doctor
+				fi
+   brew install heroku/brew/heroku
+elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+		dist=`grep DISTRIB_ID /etc/*-release | awk -F '=' '{print $2}'`
+		if [ "$dist" == "Ubuntu" ]; then
+		  echo "installing with apt"
+				if exists heroku; then
+					echo 'You have the heroku cli already installed'
+				else
+					sudo apt-add-repository 'deb http://toolbelt.herokuapp.com/ubuntu ./'
+					curl http://toolbelt.herokuapp.com/apt/release.key | apt-key add -
+					sudo apt-get update
+					sudo apt-get install heroku-toolbelt
+				fi
+		else
+		  echo "Installing without apt"
+				if exists heroku; then
+					echo 'You have the heroku cli already installed'
+				else
+				 wget https://toolbelt.heroku.com/install.sh
+					sudo sh install.sh
+					echo 'PATH="/usr/local/heroku/bin:$PATH"' >> ~/.profile
+					sudo ln -s /usr/local/heroku/bin/heroku /usr/bin/heroku
+					heroku
+				fi
+		fi
+elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW32_NT" ]; then
+echo "Win32"
+echo "Click the link and install from the installer"
+				https://cli-assets.heroku.com/heroku-cli/channels/stable/heroku-cli-x86.exe
+elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW64_NT" ]; then
+				# Do something under 64 bits Windows NT platform
+				echo "Click the link and install from the installer"
+				https://cli-assets.heroku.com/heroku-cli/channels/stable/heroku-cli-x64.exe
+				echo "Win64"
+fi
+
+
+
+}
 Create_new_repo() {
 		echo "Please enter your profile name: "
 		read -r Github_profilename
@@ -190,6 +282,11 @@ echo "7) Quit"
     do
       case $opt in
         "Github")
+									if exists git; then
+						    echo "all good git is installed"
+						   else 
+						    INSTALLGITCLI
+						   fi
           GithubOptions=("Create New Repo" "Pull" "Push" "Help" "Main Menu" "Quit")
           select GithubOpt in "${GithubOptions[@]}"
           do
@@ -229,6 +326,11 @@ echo "7) Quit"
           Main_Menu_Options
           ;;
         "Heroku")
+								if exists heroku; then
+						    echo "all good heroku is installed"
+						   else 
+						    INSTALLHEROKUCLI
+						   fi
           HerokuOptions=("Current Apps" "Open App in browser" "Create New App" "Push" "Config Vars" "View Logs" "Help" "Main Menu" "Quit")
           select HerokuOpt in "${HerokuOptions[@]}"
           do
@@ -611,29 +713,22 @@ echo "7) Quit"
           do
             case $PreReqOpt in
               "Github CLI")
-                if exists git; then
-																		echo 'You have the git cli already installed'
-																else
-																		echo 'Your system does not have the git cli installed'
-																		echo "Installing the git cli"
-																fi
+                INSTALLGITCLI
                 break
                 ;;
               "Heroku CLI")
                 if exists heroku; then
 																		echo 'You have the heroku cli already installed'
 																else
-																		echo 'Your system does not have the heroku cli installed'
-																		echo "Installing the heroku cli"
+																		INSTALLHEROKUCLI
 																fi
                 break
                 ;;
               "Amazon CLI")
-                if exists aws; then
-																		echo 'You have the aws cli already installed'
+                if exists heroku; then
+																		echo 'You have the heroku cli already installed'
 																else
-																		echo 'Your system does not have the aws cli installed'
-																		echo "Installing the aws cli"
+																		INSTALLGITCLI
 																fi
                 break
                 ;;					
