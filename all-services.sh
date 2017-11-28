@@ -2,6 +2,11 @@
 ##This script was created by Joseph Mckenzie.
 ##If you enjoy this script and it helps, sweet you can view more of code at http://github.com/josephmckenzie
 
+exists()
+{
+  command -v "$1" >/dev/null 2>&1
+}
+
 Create_new_repo() {
 		echo "Please enter your profile name: "
 		read -r Github_profilename
@@ -107,9 +112,10 @@ fi
 Main_Menu_Options() {
 echo -e "\n1) Github" 
 echo "2) Heroku" 
-echo "3) Amazon" 
-echo "4) Help" 
-echo "5) Quit"
+echo "3) Amazon"
+echo "4) Install prerequisites"
+echo "5) Help" 
+echo "6) Quit"
 #echo -e ""
 #menunumber=0
 #for fn in ${options[@]}; do
@@ -179,7 +185,7 @@ echo "7) Quit"
 
   #PS3 is a default prompt statment for bash PS3 is for
     PS3='Please enter your choice: '
-    options=("Github" "Heroku" "Amazon" "Help" "Quit")
+    options=("Github" "Heroku" "Amazon" "Install prerequisites" "Help" "Quit")
     select opt in "${options[@]}"
     do
       case $opt in
@@ -202,7 +208,7 @@ echo "7) Quit"
                 Github_add_check_commit
                 echo "Pushing Code"
                 break
-                ;;									
+                ;;					
               "Help")
                 echo "Displaying Help"
                 help
@@ -599,6 +605,59 @@ echo "7) Quit"
           done
           break
           ;;
+								"Install prerequisites")
+								   PreReqOptions=("Github CLI" "Heroku CLI" "Amazon CLI" "Help" "Main Menu" "Quit")
+          select PreReqOpt in "${PreReqOptions[@]}"
+          do
+            case $PreReqOpt in
+              "Github CLI")
+                if exists git; then
+																		echo 'You have the git cli already installed'
+																else
+																		echo 'Your system does not have the git cli installed'
+																		echo "Installing the git cli"
+																fi
+                break
+                ;;
+              "Heroku CLI")
+                if exists heroku; then
+																		echo 'You have the heroku cli already installed'
+																else
+																		echo 'Your system does not have the heroku cli installed'
+																		echo "Installing the heroku cli"
+																fi
+                break
+                ;;
+              "Amazon CLI")
+                if exists aws; then
+																		echo 'You have the aws cli already installed'
+																else
+																		echo 'Your system does not have the aws cli installed'
+																		echo "Installing the aws cli"
+																fi
+                break
+                ;;					
+              "Help")
+                echo "Displaying Help"
+                help
+                break 2
+                ;;
+														"Main Menu")
+														 echo "Should echo br 1 next"
+																break
+																;;		
+              "Quit")
+														  echo "Quit Program (br 2)"
+                break 2
+                ;;
+              *) echo invalid option;;
+            esac
+          done
+										echo "Br 1"
+          Main_Menu_Options
+          ;;										
+#										break
+#										;;		
         "Help")
           echo "You chose the Readme"
 										help
