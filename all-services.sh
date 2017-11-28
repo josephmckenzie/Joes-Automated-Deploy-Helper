@@ -310,7 +310,7 @@ echo "7) Quit"
 
   #PS3 is a default prompt statment for bash PS3 is for
     PS3='Please enter your choice: '
-    options=("Github" "Heroku" "Amazon" "Install prerequisites" "Help" "Quit")
+    options=("Github" "Heroku" "Amazon" "Install CLIs" "Help" "Quit")
     select opt in "${options[@]}"
     do
       case $opt in
@@ -745,13 +745,18 @@ echo "7) Quit"
           done
           break
           ;;
-								"Install prerequisites")
+								"Install CLIs")
+								   echo "There should be no need install any CLI by hand, this is here incase something went wrong"
 								   PreReqOptions=("Github CLI" "Heroku CLI" "Amazon CLI" "Help" "Main Menu" "Quit")
           select PreReqOpt in "${PreReqOptions[@]}"
           do
             case $PreReqOpt in
               "Github CLI")
-                INSTALLGITCLI
+														  if exits git; then
+																		echo 'You have the Git cli already installed'
+																else
+																 INSTALLGITCLI
+																fi
                 break
                 ;;
               "Heroku CLI")
@@ -763,10 +768,10 @@ echo "7) Quit"
                 break
                 ;;
               "Amazon CLI")
-                if exists heroku; then
-																		echo 'You have the heroku cli already installed'
+                if exists aws; then
+																		echo 'You have the AWS cli already installed'
 																else
-																		INSTALLGITCLI
+																		INSTALLAWSCLI
 																fi
                 break
                 ;;					
