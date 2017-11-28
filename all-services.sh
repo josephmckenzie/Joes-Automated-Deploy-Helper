@@ -38,15 +38,11 @@ elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
      sudo yum install git
 				fi
 		fi
-elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW32_NT" ]; then
-echo "Win32"
-echo "Click the link and install from the installer"
-				https://git-for-windows.github.io/
-elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW64_NT" ]; then
-				# Do something under 64 bits Windows NT platform
-				echo "Click the link and install from the installer"
-				https://git-for-windows.github.io/
-				echo "Win64"
+else
+				echo "Click the link and install from the installer (32-bit Windows)"
+						https://git-for-windows.github.io/
+				echo "Click the link and install from the installer (64-bit Windows)"
+						https://git-for-windows.github.io/
 fi
 }
 
@@ -65,6 +61,11 @@ elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
 		dist=`grep DISTRIB_ID /etc/*-release | awk -F '=' '{print $2}'`
 		if [ "$dist" == "Ubuntu" ]; then
 		  echo "installing with apt"
+				if exists ruby; then
+				  echo "Ruby installed already"
+				else
+				  apt install ruby
+				fi
 				if exists heroku; then
 					echo 'You have the heroku cli already installed'
 				else
@@ -75,45 +76,60 @@ elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
 				fi
 		else
 		  echo "Installing without apt"
+				if exists ruby; then
+				  echo "Ruby installed already"
+				else
+				  sudo yum install ruby
+				fi
 				if exists heroku; then
 					echo 'You have the heroku cli already installed'
 				else
-				 wget https://toolbelt.heroku.com/install.sh
-					sudo sh install.sh
-					echo 'PATH="/usr/local/heroku/bin:$PATH"' >> ~/.profile
-					sudo ln -s /usr/local/heroku/bin/heroku /usr/bin/heroku
-					heroku
+				 if exists wget; then
+							wget https://toolbelt.heroku.com/install.sh
+							sudo sh install.sh
+							echo 'PATH="/usr/local/heroku/bin:$PATH"' >> ~/.profile
+							sudo ln -s /usr/local/heroku/bin/heroku /usr/bin/heroku
+							heroku
+					else 
+					  sudo yum install wget
+							wget https://toolbelt.heroku.com/install.sh
+							sudo sh install.sh
+							echo 'PATH="/usr/local/heroku/bin:$PATH"' >> ~/.profile
+							sudo ln -s /usr/local/heroku/bin/heroku /usr/bin/heroku
+							heroku
+					fi
 				fi
 		fi
-elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW32_NT" ]; then
-echo "Win32"
-echo "Click the link and install from the installer"
+else
+echo "Click the link and install from the installer (32-bit Windows)"
 				https://cli-assets.heroku.com/heroku-cli/channels/stable/heroku-cli-x86.exe
-elif [ "$(expr substr $(uname -s) 1 10)" == "MINGW64_NT" ]; then
-				# Do something under 64 bits Windows NT platform
-				echo "Click the link and install from the installer"
+				echo "Click the link and install from the installer (64-bit Windows)"
 				https://cli-assets.heroku.com/heroku-cli/channels/stable/heroku-cli-x64.exe
-				echo "Win64"
 fi
-
-
-
 }
 
 INSTALLAWSCLI() {
-curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip"
- if exists unzip; then
-			unzip awscli-bundle.zip
-			./awscli-bundle/install -b ~/bin/aws
-			echo $PATH | grep ~/bin
-			export PATH=~/bin:$PATH 
-	else
-	  if exists apt; then
-		   apt install unzip -y
-			else
-			  yum install unzip -y
-			fi
- fi
+if [ "$(uname)" == "Darwin" ] || [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+		curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip"
+		if exists unzip; then
+				unzip awscli-bundle.zip
+				./awscli-bundle/install -b ~/bin/aws
+				echo $PATH | grep ~/bin
+				export PATH=~/bin:$PATH 
+		else
+				if exists apt; then
+						apt install unzip -y
+				else
+						yum install unzip -y
+				fi
+		fi
+else
+ echo "Install for windows"
+	echo "Download the MSI for windows (32-bit)"
+	https://s3.amazonaws.com/aws-cli/AWSCLI32.msi
+	echo "Download the MSI for windows (64-bit)"
+	https://s3.amazonaws.com/aws-cli/AWSCLI64.msi
+fi
 }
 
 Create_new_repo() {
