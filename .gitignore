@@ -1,3 +1,4 @@
 /dontadd
 joes-ubuntu.pem
 
+/node_modules/*

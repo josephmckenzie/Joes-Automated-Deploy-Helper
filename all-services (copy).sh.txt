@@ -2,163 +2,14 @@
 ##This script was created by Joseph Mckenzie.
 ##If you enjoy this script and it helps, sweet you can view more of code at http://github.com/josephmckenzie
 
-uname="$(uname)"
-unameArch="$(uname -m)"
-
-help() {
-		cat help.txt
-}
-
-if [ "$1" == -h ]; then
-		help
-		exit 0
-fi
-
-exists() {
+exists()
+{
   command -v "$1" >/dev/null 2>&1
 }
 
-# Does this work for Mac? , it should but needs to be tested.
-
-
-RUBYINSTALLER() {
-echo "Do you wish to install Ruby?"
-select yn in "Yes" "No"; do
-case $yn in
-				Yes ) 
-				echo "yes selected"
-				if exists ruby; then
-						echo "Ruby installed already"
-				else
-						if exists apt; then
-									apt install ruby
-						elif exists yum; then 
-									yum install ruby
-						else
-									echo "Couldn't find a compatible method to install Ruby for your system"
-									echo "Please download Ruby from"
-									echo https://www.ruby-lang.org/en/downloads/
-						fi
-				fi
-				break
-				;;
-				No )
-				echo "No selected"
-				exit
-				;;
-esac
-done
-}
-
-INSTALLRUBY() {
-if [[ "$uname" == "Darwin" ]]; then
- echo "We need to install some required files before you can run this script properly (Mac)"
-  				 INSTALLRUBY
-elif [[ "$uname" == "Linux" ]]; then
-  echo "We need to install some required files before you can run this script properly (Linux)"
-				 INSTALLRUBY
-elif [[ "$uname"] == *"MING"* ]]; then
-  echo "We need to install some required files before you can run this script properly (Windows)"
-	    INSTALLRUBY
-else
-  echo "We need to install some required files before you can run this script properly (Windows)"
-     INSTALLRUBY
-fi
-}
-
-INSTALLBREW() {
-echo "Do you wish to install HomeBrew?"
-select yn in "Yes" "No"; do
-case $yn in
-				Yes ) 
-				echo "yes selected"
-				if exists brew; then
-						echo "HomeBrew installed already"
-				else
-						if exists ruby; then
-									ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-	        brew doctor
-						else
-									echo "Ruby must first be installed is it?"
-									echo "If ruby is installed and you are still having issues installing HomeBrew (Mac) please go to"
-									echo https://docs.brew.sh/Installation.html
-						fi
-				fi
-				break
-				;;
-				No )
-				echo "No selected"
-				exit
-				;;
-esac
-done
-}
-
 INSTALLGITCLI() {
-if [ "$uname" == "Darwin" ]; then
-			echo "Installing Git CLI for Mac ($uname)"
-			INSTALLBREW
-			if exists brew; then
-					brew install git
-			else
-					echo "HomeBrew must be installed to install from this script"
-					echo "You can try to install from"
-					echo https://git-scm.com/downloads
-			fi
-elif [ "$uname" == "Linux" ]; then
-			if exists git; then
-						echo "Git is already installed SWEET"
-			else
-					echo "Installing Git CLI for Linux ($uname)"
-					if exists apt; then
-							sudo apt-get update
-							sudo apt-get upgrade
-							sudo apt-get install git
-					elif exists yum; then
-							sudo yum upgrade
-							sudo yum install git
-					else
-							echo "Could not find a good installer for your system (Linux), please install the git CLI from hand"
-							echo https://git-scm.com/downloads
-					fi
-			fi
-elif [[ "$uname" == *"MING"* ]]; then
-						echo "Download for the installer (32-bit Windows) should start automatically"
-						start	https://git-for-windows.github.io/
-else
-   echo "Couldn't deterimine your OS type"
-fi
-}
-
-HEROKUINSTALLER() {
-if exists heroku; then
-		echo 'You have the heroku cli already installed'
-else
-		echo "Do you wish to install Heroku CLI?"
-		select yn in "Yes" "No"; do
-		case $yn in
-						Yes ) 
-								echo "yes selected"
-								if exists heroku; then
-										echo "Heroku CLI installed already"
-								else
-										INSTALLHEROKUCLI
-								fi
-								break
-								;;
-						No )
-								echo "No selected"
-								exit
-								;;
-		esac
-		done 
-fi
-
-}
-
-INSTALLHEROKUCLI() {
 if [ "$(uname)" == "Darwin" ]; then
-			echo "Installing Heroku CLI for Mac"
+			echo "Mac"
 			if exists brew; then
 					echo 'You have brew already installed'
 				else
@@ -166,64 +17,176 @@ if [ "$(uname)" == "Darwin" ]; then
 					ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
      brew doctor
 				fi
-     brew install heroku/brew/heroku
+			brew install git
 elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
 		dist=`grep DISTRIB_ID /etc/*-release | awk -F '=' '{print $2}'`
 		if [ "$dist" == "Ubuntu" ]; then
-				INSTALLRUBY		 
-				if exists heroku; then
-					echo 'You have the heroku cli already installed'
+		  echo "installing with apt"
+				if exists git; then
+					echo 'You have the git cli already installed'
 				else
-				 if exists wget; then
-							wget https://toolbelt.heroku.com/install.sh
-							sudo sh install.sh
-							echo 'PATH="/usr/local/heroku/bin:$PATH"' >> ~/.profile
-							sudo ln -s /usr/local/heroku/bin/heroku /usr/bin/heroku
-							heroku
-					elif exists apt; then
-					  sudo apt-add-repository 'deb http://toolbelt.herokuapp.com/ubuntu ./'
-							curl http://toolbelt.herokuapp.com/apt/release.key | apt-key add -
-							sudo apt-get update
-							sudo apt-get install heroku-toolbelt
-					elif exists yum; then
-					  sudo yum install wget
-							wget https://toolbelt.heroku.com/install.sh
-							sudo sh install.sh
-							echo 'PATH="/usr/local/heroku/bin:$PATH"' >> ~/.profile
-							sudo ln -s /usr/local/heroku/bin/heroku /usr/bin/heroku
-							heroku
-					else
-					  echo "Error installing Heroku CLI"
-							echo "Please install it from Heroku's Site"
-							echo -e https://devcenter.heroku.com/articles/heroku-cli\#download-and-install
-					fi
+					sudo apt-get update
+					sudo apt-get upgrade
+					sudo apt-get install git
+				fi
+		else
+		  echo "Installing with yum"
+				if exists git; then
+					echo 'You have the git cli already installed'
+				else
+				 sudo yum upgrade
+     sudo yum install git
 				fi
 		fi
 else
-echo "Click the link and install from the installer (32-bit Windows)"
-				https://cli-assets.heroku.com/heroku-cli/channels/stable/heroku-cli-x86.exe
+				echo "Click the link and install from the installer (32-bit Windows)"
+						https://git-for-windows.github.io/
 				echo "Click the link and install from the installer (64-bit Windows)"
-				https://cli-assets.heroku.com/heroku-cli/channels/stable/heroku-cli-x64.exe
+						https://git-for-windows.github.io/
 fi
-} #needs work
+}
 
-INSTALLUNZIP() {
+#INSTALLHEROKUCLI() {
+#if [ "$(uname)" == "Darwin" ]; then
+#			echo "Mac"
+#			if exists brew; then
+#					echo 'You have brew already installed'
+#				else
+#				 echo "installing needed Homebrew"
+#					ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+#     brew doctor
+#				fi
+#   brew install heroku/brew/heroku
+#elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+#		dist=`grep DISTRIB_ID /etc/*-release | awk -F '=' '{print $2}'`
+#		if [ "$dist" == "Ubuntu" ]; then
+#		  echo "installing with apt"
+#				if exists ruby; then
+#				  echo "Ruby installed already"
+#				else
+#				  apt install ruby
+#				fi
+#				if exists heroku; then
+#					echo 'You have the heroku cli already installed'
+#				else
+#					sudo add-apt-repository "deb https://cli-assets.heroku.com/branches/stable/apt ./"
+#					curl -L https://cli-assets.heroku.com/apt/release.key | sudo apt-key add -
+#					sudo apt-get update
+#					sudo apt-get install herok
+#				fi
+#		else
+#		  echo "Installing without apt"
+#				if exists ruby; then
+#				  echo "Ruby installed already"
+#				else
+#				  sudo yum install ruby
+#				fi
+#				if exists heroku; then
+#					echo 'You have the heroku cli already installed'
+#				else
+#				 if exists wget; then
+#							wget https://toolbelt.heroku.com/install.sh
+#							sudo sh install.sh
+#							echo 'PATH="/usr/local/heroku/bin:$PATH"' >> ~/.profile
+#							sudo ln -s /usr/local/heroku/bin/heroku /usr/bin/heroku
+#							heroku
+#					else 
+#					  sudo yum install wget
+#							wget https://toolbelt.heroku.com/install.sh
+#							sudo sh install.sh
+#							echo 'PATH="/usr/local/heroku/bin:$PATH"' >> ~/.profile
+#							sudo ln -s /usr/local/heroku/bin/heroku /usr/bin/heroku
+#							heroku
+#					fi
+#				fi
+#		fi
+#else
+#echo "Click the link and install from the installer (32-bit Windows)"
+#				https://cli-assets.heroku.com/heroku-cli/channels/stable/heroku-cli-x86.exe
+#				echo "Click the link and install from the installer (64-bit Windows)"
+#				https://cli-assets.heroku.com/heroku-cli/channels/stable/heroku-cli-x64.exe
+#fi
+#}
 
-if exists apt; then
-		apt install unzip -y
-elif exists yum; then
-		yum install unzip -y
+INSTALLHEROKUCLI() {
+# Run this from your terminal.
+# Replace OS with one of “linux”, “darwin”, “windows”, “freebsd”, “openbsd”
+# Replace ARCH with one of “amd64”, “386” or “arm”
+uname="$(uname -m)"
+unameArch="$(uname -m)"
+#a="STRINGTOMAKELITTLE"
+#echo "$a" | tr '[:upper:]' '[:lower:]'
+
+if [ "$uname" == "Darwin" ]; then
+		if [[ $unameArch == *"x86_64"* ]]; then
+	   wget https://cli-assets.heroku.com/branches/stable/heroku-darwin-amd64.tar.gz
+				mkdir -p /usr/local/lib /usr/local/bin
+				tar -xvzf heroku-darwin-amd64.tar.gz -C /usr/local/lib
+				ln -s /usr/local/lib/heroku/bin/heroku /usr/local/bin/heroku
+				# ensure that /usr/local/bin is in the PATH environment variable
+		elif [[ $unameArch == *"arm"* ]]; then
+				wget https://cli-assets.heroku.com/branches/stable/heroku-darwin-arm.tar.gz
+				mkdir -p /usr/local/lib /usr/local/bin
+				tar -xvzf heroku-darwin-arm.tar.gz -C /usr/local/lib
+				ln -s /usr/local/lib/heroku/bin/heroku /usr/local/bin/heroku
+				# ensure that /usr/local/bin is in the PATH environment variable
+		else 
+				wget https://cli-assets.heroku.com/branches/stable/heroku-darwin-386.tar.gz
+				mkdir -p /usr/local/lib /usr/local/bin
+				tar -xvzf heroku-darwin-386.tar.gz -C /usr/local/lib
+				ln -s /usr/local/lib/heroku/bin/heroku /usr/local/bin/heroku
+				# ensure that /usr/local/bin is in the PATH environment variable
+		fi		  
+elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
+		 if [[ $unameArch == *"x86_64"* ]]; then
+	   wget https://cli-assets.heroku.com/branches/stable/heroku-linux-amd64.tar.gz
+				mkdir -p /usr/local/lib /usr/local/bin
+				tar -xvzf heroku-linux-amd64.tar.gz -C /usr/local/lib
+				ln -s /usr/local/lib/heroku/bin/heroku /usr/local/bin/heroku
+				# ensure that /usr/local/bin is in the PATH environment variable
+			elif [[ $unameArch == *"arm"* ]]; then
+					wget https://cli-assets.heroku.com/branches/stable/heroku-linux-arm.tar.gz
+					mkdir -p /usr/local/lib /usr/local/bin
+					tar -xvzf heroku-linux-arm.tar.gz -C /usr/local/lib
+					ln -s /usr/local/lib/heroku/bin/heroku /usr/local/bin/heroku
+					# ensure that /usr/local/bin is in the PATH environment variable
+			else 
+					wget https://cli-assets.heroku.com/branches/stable/heroku-linux-386.tar.gz
+					mkdir -p /usr/local/lib /usr/local/bin
+					tar -xvzf heroku-linux-386.tar.gz -C /usr/local/lib
+					ln -s /usr/local/lib/heroku/bin/heroku /usr/local/bin/heroku
+					# ensure that /usr/local/bin is in the PATH environment variable
+			fi
 else
-  echo "Couldnt install needed unzip to install AWS"
-		echo "Please install AWS CLI by hand via the AWS site"
-		echo http://docs.aws.amazon.com/cli/latest/userguide/installing.html
-fi
-
+#			if [[ $unameArch == *"x86_64"* ]]; then
+#					wget https://cli-assets.heroku.com/branches/stable/heroku-windows-amd64.tar.gz
+#					mkdir -p /usr/local/lib /usr/local/bin
+#					tar -xvzf heroku-windows-amd64.tar.gz -C /usr/local/lib
+#					ln -s /usr/local/lib/heroku/bin/heroku /usr/local/bin/heroku
+#					# ensure that /usr/local/bin is in the PATH environment variable
+#			elif [[ $unameArch == *"arm"* ]]; then
+#					wget https://cli-assets.heroku.com/branches/stable/heroku-windows-arm.tar.gz
+#					mkdir -p /usr/local/lib /usr/local/bin
+#					tar -xvzf heroku-windows-arm.tar.gz -C /usr/local/lib
+#					ln -s /usr/local/lib/heroku/bin/heroku /usr/local/bin/heroku
+#					# ensure that /usr/local/bin is in the PATH environment variable
+#			else 
+#					wget https://cli-assets.heroku.com/branches/stable/heroku-windows-386.tar.gz
+#					mkdir -p /usr/local/lib /usr/local/bin
+#					tar -xvzf heroku-windows-386.tar.gz -C /usr/local/lib
+#					ln -s /usr/local/lib/heroku/bin/heroku /usr/local/bin/heroku
+#					# ensure that /usr/local/bin is in the PATH environment variable
+#			fi
+    echo "Since you are a windows user please download from this link"
+    echo "Windows 32 bit"
+				  https://cli-assets.heroku.com/heroku-cli/channels/stable/heroku-cli-x86.exe
+				echo "Windows 64 bit"
+				  https://cli-assets.heroku.com/heroku-cli/channels/stable/heroku-cli-x64.exe
+	fi
 }
 
 INSTALLAWSCLI() {
-if [ "$uname" == "Darwin" ] || [ "$uname" == "Linux" ]; then
-		INSTALLUNZIP		
+if [ "$(uname)" == "Darwin" ] || [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
 		curl "https://s3.amazonaws.com/aws-cli/awscli-bundle.zip" -o "awscli-bundle.zip"
 		if exists unzip; then
 				unzip awscli-bundle.zip
@@ -231,19 +194,18 @@ if [ "$uname" == "Darwin" ] || [ "$uname" == "Linux" ]; then
 				echo $PATH | grep ~/bin
 				export PATH=~/bin:$PATH 
 		else
-				echo "Unzip is needed for install , is it installed? If not"
-				echo "Please install AWS CLI by hand via the AWS site"
-		  echo http://docs.aws.amazon.com/cli/latest/userguide/installing.html
+				if exists apt; then
+						apt install unzip -y
+				else
+						yum install unzip -y
+				fi
 		fi
 else
-			echo "Installation for windows"
-			if [ "$unameArch" == *"32"* ]; then 
-					echo "Download the MSI for windows (32-bit)"
-					https://s3.amazonaws.com/aws-cli/AWSCLI32.msi
-			elif [ "$unameArch" == *"64"* ]; then 
-					echo "Download the MSI for windows (64-bit)"
-					https://s3.amazonaws.com/aws-cli/AWSCLI64.msi
-			fi
+ echo "Install for windows"
+	echo "Download the MSI for windows (32-bit)"
+	https://s3.amazonaws.com/aws-cli/AWSCLI32.msi
+	echo "Download the MSI for windows (64-bit)"
+	https://s3.amazonaws.com/aws-cli/AWSCLI64.msi
 fi
 }
 
@@ -340,6 +302,15 @@ read -r configkey
 heroku config:unset --app "$APPNAME" "$configkey"
 }
 
+help() {
+		cat help.txt
+}
+
+if [ "$1" == -h ]; then
+		help
+		exit 0
+fi
+
 Main_Menu_Options() {
 echo -e "\n1) Github" 
 echo "2) Heroku" 
@@ -421,11 +392,11 @@ echo "7) Quit"
     do
       case $opt in
         "Github")
-#									if exists git; then
-#						    echo "all good git is installed"
-#						   else 
-#						    INSTALLGITCLI
-#						   fi
+									if exists git; then
+						    echo "all good git is installed"
+						   else 
+						    INSTALLGITCLI
+						   fi
           GithubOptions=("Create New Repo" "Pull" "Push" "Help" "Main Menu" "Quit")
           select GithubOpt in "${GithubOptions[@]}"
           do
@@ -465,11 +436,11 @@ echo "7) Quit"
           Main_Menu_Options
           ;;
         "Heroku")
-#								if exists heroku; then
-#						    echo "all good heroku is installed"
-#						   else 
-#						    INSTALLHEROKUCLI
-#						   fi
+								if exists heroku; then
+						    echo "all good heroku is installed"
+						   else 
+						    INSTALLHEROKUCLI
+						   fi
           HerokuOptions=("Current Apps" "Open App in browser" "Create New App" "Push" "Config Vars" "View Logs" "Help" "Main Menu" "Quit")
           select HerokuOpt in "${HerokuOptions[@]}"
           do
@@ -579,11 +550,11 @@ echo "7) Quit"
           Main_Menu_Options
           ;;
         "Amazon")
-#								 if exists aws; then
-#									  echo "AWS CLI installed already"
-#									else
-#									  INSTALLAWSCLI
-#									fi
+								 if exists aws; then
+									  echo "AWS CLI installed already"
+									else
+									  INSTALLAWSCLI
+									fi
           AmazonOptions=("IAM Config" "AWS Config" "Lambda" "S3 Bucket" "Help" "Quit")
           select AmazonOpt in "${AmazonOptions[@]}"
           do
@@ -852,7 +823,7 @@ echo "7) Quit"
           break
           ;;
 								"Install CLIs")
-								   echo "There should be no need install any CLI by hand, this is here incase something went wrong"
+								   echo "There should be no need install any CLI by hand, this is here incase something went wrong, or you wish to do it by hand"
 								   PreReqOptions=("Github CLI" "Heroku CLI" "Amazon CLI" "Help" "Main Menu" "Quit")
           select PreReqOpt in "${PreReqOptions[@]}"
           do
