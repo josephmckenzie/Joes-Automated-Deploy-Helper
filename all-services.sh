@@ -18,9 +18,6 @@ exists() {
   command -v "$1" >/dev/null 2>&1
 }
 
-# Does this work for Mac? , it should but needs to be tested.
-
-
 RUBYINSTALLER() {
 echo "Do you wish to install Ruby?"
 select yn in "Yes" "No"; do
@@ -31,9 +28,15 @@ case $yn in
 						echo "Ruby installed already"
 				else
 						if exists apt; then
+						   apt update -y
+         sudo apt-get --ignore-missing install build-essential git-core curl openssl libssl-dev libcurl4-openssl-dev zlib1g zlib1g-dev libreadline-dev libreadline6 libreadline6-dev libyaml-dev libsqlite3-dev libsqlite3-0 sqlite3 libxml2-dev libxslt1-dev python-software-properties libffi-dev libgdm-dev libncurses5-dev automake autoconf libtool bison postgresql postgresql-contrib libpq-dev pgadmin3 libc6-dev nodejs -y
+									
 									apt install ruby
 						elif exists yum; then 
 									yum install ruby
+						elif exists brew; then
+						   brew install ruby
+						   export PATH=/usr/local/opt/ruby/bin:$PATH
 						else
 									echo "Couldn't find a compatible method to install Ruby for your system"
 									echo "Please download Ruby from"
@@ -53,16 +56,16 @@ done
 INSTALLRUBY() {
 if [[ "$uname" == "Darwin" ]]; then
  echo "We need to install some required files before you can run this script properly (Mac)"
-  				 INSTALLRUBY
+  				 RUBYINSTALLER
 elif [[ "$uname" == "Linux" ]]; then
   echo "We need to install some required files before you can run this script properly (Linux)"
-				 INSTALLRUBY
+				 RUBYINSTALLER
 elif [[ "$uname"] == *"MING"* ]]; then
   echo "We need to install some required files before you can run this script properly (Windows)"
-	    INSTALLRUBY
+	    RUBYINSTALLER
 else
   echo "We need to install some required files before you can run this script properly (Windows)"
-     INSTALLRUBY
+     RUBYINSTALLER
 fi
 }
 
@@ -263,6 +266,15 @@ Create_new_repo() {
 		git push -u origin master
 }
 
+GitHub_clone_repo() {
+  echo "Please enter the Github profile name"
+  read -r GithubProfileName
+		echo "Please enter the repo name you wish to clone"
+		read -r GithubRepoName
+		git clone https://github.com/"$GithubProfileName"/"$GithubRepoName".git
+		echo "Cloning Repo"
+}
+
 Github_add_check_commit(){
 		git add .
 		git status
@@ -426,7 +438,7 @@ echo "7) Quit"
 #						   else 
 #						    INSTALLGITCLI
 #						   fi
-          GithubOptions=("Create New Repo" "Pull" "Push" "Help" "Main Menu" "Quit")
+          GithubOptions=("Create New Repo" "Clone" "Pull" "Push" "Help" "Main Menu" "Quit")
           select GithubOpt in "${GithubOptions[@]}"
           do
             case $GithubOpt in
@@ -435,6 +447,10 @@ echo "7) Quit"
                 echo "Creating New Repo"
                 break
                 ;;
+														"Clone")
+																GitHub_clone_repo
+																break
+																;;
               "Pull")
                 git pull origin master
                 echo "Pulling code from Repo"
@@ -503,7 +519,7 @@ echo "7) Quit"
                 break
                 ;;
               "Config Vars")
-																				HerokuConfigOptions=("Current Config vars" "Add new Config var" "Delete Config var" "Help" "Heroku Main Menu" "Main Menu" "Quit")
+															HerokuConfigOptions=("Current Config vars" "Add new Config var" "Delete Config var" "Help" "Heroku Main Menu" "Main Menu" "Quit")
 																select HerokuConfigOpt in "${HerokuConfigOptions[@]}"
 																do
 																		case $HerokuConfigOpt in
