@@ -255,6 +255,7 @@ Create_new_repo() {
 		read -r Github_profilename
 		echo "Please enter a new repo name: "
 		read -r Guthub_repo_name
+
 		curl --user "$Github_profilename" https://api.github.com/user/repos -d "{\"name\":\"$Guthub_repo_name\"}"
 		echo "$Guthub_repo_name" >> README.md
 		git init
@@ -300,6 +301,35 @@ Github_add_check_commit(){
 				fi
 		done
 }
+
+Github_get_auth_token(){
+echo "This will give you a token in which you can use to delete a repo from github"
+echo "Please enter your Profile name"
+read -r profilename
+curl -v -u $profilename -X POST https://api.github.com/authorizations -d '{"scopes":["delete_repo"], "note":"token with delete repo scope"}'
+
+}
+
+Github_delete_repo(){
+echo "You need a auth token to delete a repo from Github using the cli, do you have one? (y/n)"
+			read -r ANSWER
+				Github_delete_repo=$(echo "$ANSWER" | tr '[:upper:]' '[:lower:]' | cut -c 1)
+				if [ "$Github_delete_repo" == n ]; then
+#						echo -e "Get auth token"
+						Github_get_auth_token
+				else
+						echo "Please enter your profile name"
+						read -r profilename
+						echo "Please enter the name of the repo you wish to delete"
+						read -r repo_name
+						echo "Please enter your auth token"
+						read -r auth_token
+						curl -X DELETE -H "Authorization: token $auth_token" https://api.github.com/repos/$profilename/$repo_name
+						echo "Repo Deleted from github"
+				fi
+
+}
+
 
 Heroku_create_app() {
 		echo "Please enter a new for your app: "
@@ -438,7 +468,7 @@ echo "7) Quit"
 #						   else 
 #						    INSTALLGITCLI
 #						   fi
-          GithubOptions=("Create New Repo" "Clone" "Pull" "Push" "Help" "Main Menu" "Quit")
+          GithubOptions=("Create New Repo" "Clone" "Pull" "Push" "Delete Repo" "Help" "Main Menu" "Quit")
           select GithubOpt in "${GithubOptions[@]}"
           do
             case $GithubOpt in
@@ -460,24 +490,28 @@ echo "7) Quit"
                 Github_add_check_commit
                 echo "Pushing Code"
                 break
-                ;;					
+                ;;
+														"Delete Repo")
+														  Github_delete_repo
+														  break
+														  ;;
               "Help")
                 echo "Displaying Help"
                 help
                 break 2
                 ;;
 														"Main Menu")
-														 echo "Should echo br 1 next"
+                #	echo "Should echo br 1 next"
 																break
 																;;		
               "Quit")
-														  echo "Quit Program (br 2)"
+                # echo "Quit Program (br 2)"
                 break 2
                 ;;
               *) echo invalid option;;
             esac
           done
-										echo "Br 1"
+          #	echo "Br 1"
           Main_Menu_Options
           ;;
         "Heroku")
