@@ -6,7 +6,7 @@ uname="$(uname)"
 unameArch="$(uname -m)"
 
 help() {
-		cat help.txt
+		cat ~/bin/help.txt
 }
 
 if [ "$1" == -h ]; then
@@ -600,7 +600,7 @@ echo "7) Quit"
 #									else
 #									  INSTALLAWSCLI
 #									fi
-          AmazonOptions=("IAM Config" "AWS Config" "Lambda" "S3 Bucket" "Help" "Quit")
+          AmazonOptions=("IAM Config" "AWS Config" "Lambda" "S3 Bucket" "Main Menu" "Help" "Quit")
           select AmazonOpt in "${AmazonOptions[@]}"
           do
             case $AmazonOpt in
@@ -859,13 +859,16 @@ echo "7) Quit"
                 echo "Displaying Help"
                 break
                 ;;
-              "Quit")
+																"Main Menu")
                 break
+                ;;
+              "Quit")
+                break 2
                 ;;
               *) echo invalid option;;
             esac
           done
-          break
+										Main_Menu_Options
           ;;
 								"Install CLIs")
 								   echo "There should be no need install any CLI by hand, this is here incase something went wrong"
