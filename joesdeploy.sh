@@ -307,7 +307,8 @@ echo "This will give you a token in which you can use to delete a repo from gith
 echo "Please enter your Profile name"
 read -r profilename
 curl -v -u $profilename -X POST https://api.github.com/authorizations -d '{"scopes":["delete_repo"], "note":"token with delete repo scope"}'
-
+echo "Please make a note of your auth key or just copy it and paste it in to the next step"
+Github_delete_repo
 }
 
 Github_delete_repo(){
@@ -322,14 +323,19 @@ echo "You need a auth token to delete a repo from Github using the cli, do you h
 						read -r profilename
 						echo "Please enter the name of the repo you wish to delete"
 						read -r repo_name
-						echo "Please enter your auth token"
-						read -r auth_token
+						if [ ! -f  ~/bin/authtoken.txt	]; then
+						 echo "Please enter your auth token"
+						 read -r auth_token
+							touch ~/bin/authtoken.txt
+       echo "$auth_token" >> ~/bin/authtoken.txt		
+							echo "Auth token saved to ~/bin/authtoken.txt"
+						else
+						 auth_token=$(awk -F ':' '{print $1}' ~/bin/authtoken.txt)
+						fi
 						curl -X DELETE -H "Authorization: token $auth_token" https://api.github.com/repos/$profilename/$repo_name
 						echo "Repo Deleted from github"
 				fi
-
 }
-
 
 Heroku_create_app() {
 		echo "Please enter a new for your app: "
