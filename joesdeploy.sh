@@ -28,15 +28,15 @@ case $yn in
 						echo "Ruby installed already"
 				else
 						if exists apt; then
-						   apt update -y
-         sudo apt-get --ignore-missing install build-essential git-core curl openssl libssl-dev libcurl4-openssl-dev zlib1g zlib1g-dev libreadline-dev libreadline6 libreadline6-dev libyaml-dev libsqlite3-dev libsqlite3-0 sqlite3 libxml2-dev libxslt1-dev python-software-properties libffi-dev libgdm-dev libncurses5-dev automake autoconf libtool bison postgresql postgresql-contrib libpq-dev pgadmin3 libc6-dev nodejs -y
+						  apt update -y
+        sudo apt-get --ignore-missing install build-essential git-core curl openssl libssl-dev libcurl4-openssl-dev zlib1g zlib1g-dev libreadline-dev libreadline6 libreadline6-dev libyaml-dev libsqlite3-dev libsqlite3-0 sqlite3 libxml2-dev libxslt1-dev python-software-properties libffi-dev libgdm-dev libncurses5-dev automake autoconf libtool bison postgresql postgresql-contrib libpq-dev pgadmin3 libc6-dev nodejs -y
 									
 									apt install ruby
 						elif exists yum; then 
 									yum install ruby
 						elif exists brew; then
-						   brew install ruby
-						   export PATH=/usr/local/opt/ruby/bin:$PATH
+							brew install ruby
+							export PATH=/usr/local/opt/ruby/bin:$PATH
 						else
 									echo "Couldn't find a compatible method to install Ruby for your system"
 									echo "Please download Ruby from"
@@ -55,17 +55,17 @@ done
 
 INSTALLRUBY() {
 if [[ "$uname" == "Darwin" ]]; then
- echo "We need to install some required files before you can run this script properly (Mac)"
-  				 RUBYINSTALLER
+echo "We need to install some required files before you can run this script properly (Mac)"
+  				RUBYINSTALLER
 elif [[ "$uname" == "Linux" ]]; then
   echo "We need to install some required files before you can run this script properly (Linux)"
-				 RUBYINSTALLER
+				RUBYINSTALLER
 elif [[ "$uname"] == *"MING"* ]]; then
   echo "We need to install some required files before you can run this script properly (Windows)"
 	    RUBYINSTALLER
 else
   echo "We need to install some required files before you can run this script properly (Windows)"
-     RUBYINSTALLER
+    RUBYINSTALLER
 fi
 }
 
@@ -129,7 +129,7 @@ elif [[ "$uname" == *"MING"* ]]; then
 						echo "Download for the installer (32-bit Windows) should start automatically"
 						start	https://git-for-windows.github.io/
 else
-   echo "Couldn't deterimine your OS type"
+  echo "Couldn't deterimine your OS type"
 fi
 }
 
@@ -165,11 +165,11 @@ if [ "$(uname)" == "Darwin" ]; then
 			if exists brew; then
 					echo 'You have brew already installed'
 				else
-				 echo "installing needed Homebrew"
+				echo "installing needed Homebrew"
 					ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-     brew doctor
+    brew doctor
 				fi
-     brew install heroku/brew/heroku
+    brew install heroku/brew/heroku
 elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
 		dist=`grep DISTRIB_ID /etc/*-release | awk -F '=' '{print $2}'`
 		if [ "$dist" == "Ubuntu" ]; then
@@ -177,7 +177,7 @@ elif [ "$(expr substr $(uname -s) 1 5)" == "Linux" ]; then
 				if exists heroku; then
 					echo 'You have the heroku cli already installed'
 				else
-				 if exists wget; then
+				if exists wget; then
 							wget https://toolbelt.heroku.com/install.sh
 							sudo sh install.sh
 							echo 'PATH="/usr/local/heroku/bin:$PATH"' >> ~/.profile
@@ -324,13 +324,13 @@ echo "You need a auth token to delete a repo from Github using the cli, do you h
 						echo "Please enter the name of the repo you wish to delete"
 						read -r repo_name
 						if [ ! -f ~/Documents/.tokens/githubauthtoken.txt	]; then
-						 echo "Please enter your auth token"
-						 read -r auth_token
-						 touch ~/Documents/.tokens/githubauthtoken.txt
-						 echo "$auth_token" >> ~/Documents/.tokens/githubauthtoken.txt		
-						 echo "Auth token saved to ~/Documents/.tokens"
+						echo "Please enter your auth token"
+						read -r auth_token
+						touch ~/Documents/.tokens/githubauthtoken.txt
+						echo "$auth_token" >> ~/Documents/.tokens/githubauthtoken.txt		
+						echo "Auth token saved to ~/Documents/.tokens"
 						else
-						 auth_token=$(awk -F ':' '{print $1}' ~/Documents/.tokens/githubauthtoken.txt)
+						auth_token=$(awk -F ':' '{print $1}' ~/Documents/.tokens/githubauthtoken.txt)
 						fi
 						curl -X DELETE -H "Authorization: token $auth_token" https://api.github.com/repos/$profilename/$repo_name
 						echo "Repo Deleted from github"
@@ -655,7 +655,7 @@ echo "7) Quit"
 #									else
 #									  INSTALLAWSCLI
 #									fi
-          AmazonOptions=("IAM Config" "AWS Config" "Lambda" "S3 Bucket" "Create a SQS/Lambda Stack" "Main Menu" "Help" "Quit")
+          AmazonOptions=("IAM Config" "AWS Config" "Lambda" "S3 Bucket" "Create a SQS/Lambda Stack" "Elastic Beantalk" "Main Menu" "Help" "Quit")
           select AmazonOpt in "${AmazonOptions[@]}"
           do
             case $AmazonOpt in
@@ -664,7 +664,7 @@ echo "7) Quit"
 								read CONFIGKEYS
 								if [[ "$CONFIGKEYS" == [Yy] ]]; then
 												"Please choose The name of the keyset"
-												 awk '$0 == "AWSACCOUNT" {i=1;next};i && i++ <= 1'  ~/Documents/.tokens/awsaccounts.txt
+												awk '$0 == "AWSACCOUNT" {i=1;next};i && i++ <= 1'  ~/Documents/.tokens/awsaccounts.txt
 												read KEYSET
 												aws ec2 describe-instances --profile $KEYSET
 											else 
@@ -811,33 +811,33 @@ echo "7) Quit"
 										  echo "Do you need a list of your Lambdas?"
 											read -r LISTLAMBDAS
 											if [[ "$LISTLAMBDAS" == [Yy] ]]; then
-												 aws lambda list-functions --region us-east-1 --query 'Functions[].FunctionName' --output json
-												 echo "Please enter your Lambda function name"
-												 read -r FUNCTIONNAME
-												 echo "Do you have a zip file with your code already?"
-												 read -r NEEDZIP
-												 if [[ "$NEEDZIP" == [Yy] ]]; then
-												 	echo "Please enter the name of your Lambda zip file (No need for extension)"
-                         	read -r ZIPFILE
-                      	 	aws lambda update-function-code --function-name "$FUNCTIONNAME" --zip-file fileb://"$ZIPFILE".zip
-                         	echo "Updating Lambda Function"
+												aws lambda list-functions --region us-east-1 --query 'Functions[].FunctionName' --output json
+												echo "Please enter your Lambda function name"
+												read -r FUNCTIONNAME
+												echo "Do you have a zip file with your code already?"
+												read -r NEEDZIP
+												if [[ "$NEEDZIP" == [Yy] ]]; then
+												echo "Please enter the name of your Lambda zip file (No need for extension)"
+												read -r ZIPFILE
+												aws lambda update-function-code --function-name "$FUNCTIONNAME" --zip-file fileb://"$ZIPFILE".zip
+												echo "Updating Lambda Function"
 												else
 													echo "To create a zip file, please give me a name."
 												  read	-r ZIPFILENAME
 												  zip -r "$ZIPFILENAME".zip ./*
 													aws lambda update-function-code --function-name "$FUNCTIONNAME" --zip-file fileb://"$ZIPFILENAME".zip
-                         	echo "Updating Lambda Function"
+                        echo "Updating Lambda Function"
 												fi
 											else 
 												echo "Please enter your Lambda function name"
-												 read -r FUNCTIONNAME
-												 echo "Please enter the name of your Lambda zip file (No need for extension)"
-                         read -r ZIPFILE
-                      	 aws lambda update-function-code --function-name "$FUNCTIONNAME" --zip-file fileb://"$ZIPFILE".zip
-                         echo "Updating Lambda Function" 
+												read -r FUNCTIONNAME
+												echo "Please enter the name of your Lambda zip file (No need for extension)"
+												read -r ZIPFILE
+												aws lambda update-function-code --function-name "$FUNCTIONNAME" --zip-file fileb://"$ZIPFILE".zip
+												echo "Updating Lambda Function" 
 											fi
-											 break
-                         ;;
+											break
+												;;
                     "Add/Update Enviromental Variables")
                       echo "Please enter the Lambda function name"
                       read -r LAMBDANAME
@@ -924,7 +924,7 @@ echo "7) Quit"
 												exit 0
 											fi
 											echo "Deleting S3 Bucket"
-                     break
+                    break
                       ;;
                     "Help")
                       echo "Displaying Help"
@@ -941,7 +941,7 @@ echo "7) Quit"
                 ;;
 							"Create a SQS/Lambda Stack")
 									echo "Do you have the correct worker/consumer folders and cloudformation.yml file?"
-									 read -r CORRECTSETUP
+									read -r CORRECTSETUP
 									if [[ "$CORRECTSETUP" == [Nn] ]]; then
 										echo "This is not for you yet then. Please consult the readme or if not updated yet GOOGLE IT."
 										break
@@ -967,6 +967,39 @@ echo "7) Quit"
 									fi
 								break
 								;;
+							"Elastic Beantalk")
+								  ELASTICBEANSTALKOPTIONS=("Create New Application" "Update Existing Application" "View Logs" "Help" "Quit")
+                select ELASTICBEANSTALKOpt in "${ELASTICBEANSTALKOPTIONS[@]}"
+                do
+                  case $ELASTICBEANSTALKOpt in
+										"Create New Application")
+											echo "Create New App"
+											eb init
+											eb create
+											break
+											;;
+										"Update Existing Applictaion")
+											echo "Update Existing App"
+											eb list
+											echo "What Enviroment would you like to update?"
+											read -r CHOOSEENVIORMENT
+											eb deploy "$CHOOSEENVIORMENT"
+											break
+											;;
+										"View Logs")
+											echo "Would you like to view your logs on (C)loudWatch or (D)ownload them?"
+											read -r EBLOGS
+											if [[ "$EBLOGS" == [Cc] ]]; then
+												eb logs -cw enable
+											else
+											  eb logs --zip
+											  fi
+										break
+										;;
+									esac
+								done
+								break
+								;;
               "Help")
                 help
                 echo "Displaying Help"
@@ -984,8 +1017,8 @@ echo "7) Quit"
 					Main_Menu_Options
           ;;
 								"Install CLIs")
-								   echo "There should be no need install any CLI by hand, this is here incase something went wrong"
-								   PreReqOptions=("Github CLI" "Heroku CLI" "Amazon CLI" "Help" "Main Menu" "Quit")
+								  echo "There should be no need install any CLI by hand, this is here incase something went wrong"
+								  PreReqOptions=("Github CLI" "Heroku CLI" "Amazon CLI" "Help" "Main Menu" "Quit")
           select PreReqOpt in "${PreReqOptions[@]}"
           do
             case $PreReqOpt in
