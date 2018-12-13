@@ -18,6 +18,35 @@ exists() {
   command -v "$1" >/dev/null 2>&1
 }
 
+CloneRepos() {
+select repotype in "Single Repo" "Public" "Private"; do
+    case $repotype in
+
+				Single Repo)
+				GitHub_clone_repo
+				break
+				;;
+
+        Public ) 
+        echo "Please enter the Persons whose repos you would like to clone"
+        echo "Please enter you username"
+        read USERNAME
+        read -r ORGANIZATION
+        curl -u "$USERNAME" -s https://api.github.com/users/"$USERNAME"/repos?per_page=200 | ruby -rubygems -e 'require "json"; JSON.load(STDIN.read).each { |repo| %x[git clone #{repo["ssh_url"]} ]}'
+         break
+				 ;;
+        Private ) 
+        echo "Please enter you username"
+        read USERNAME
+        echo "Please enter the Organization you wish to clone the repos from "
+        read -r ORGANIZATION
+        curl -u "$USERNAME" -s https://api.github.com/orgs/"$ORGANIZATION"/repos?per_page=200 | ruby -rubygems -e 'require "json"; JSON.load(STDIN.read).each { |repo| %x[git clone #{repo["ssh_url"]} ]}'
+        ;;
+    esac
+done
+
+}
+
 RUBYINSTALLER() {
 echo "Do you wish to install Ruby?"
 select yn in "Yes" "No"; do
