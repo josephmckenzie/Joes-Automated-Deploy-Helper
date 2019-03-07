@@ -1,11 +1,10 @@
 # Scripting !!!!
 # joestodelete
 
-
 To add to system path:
 
 
-1. Modify the prrmissons to make it executable any where on you command line
+1. Modify the permissons to make it executable any where on your command line
    chmod +x joesdeploy
 
 2. Copy the bash script to your bin folder
@@ -23,7 +22,6 @@ To add to system path:
 
 ENJOY
 !!
-Webhook working :)   !!!
 
 
 
