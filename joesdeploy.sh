@@ -21,109 +21,108 @@ exists() {
 RUBYINSTALLER() {
 echo "Do you wish to install Ruby?"
 select yn in "Yes" "No"; do
-case $yn in
-				Yes ) 
-				echo "yes selected"
-				if exists ruby; then
-						echo "Ruby installed already"
-				else
-						if exists apt; then
-						  apt update -y
-        sudo apt-get --ignore-missing install build-essential git-core curl openssl libssl-dev libcurl4-openssl-dev zlib1g zlib1g-dev libreadline-dev libreadline6 libreadline6-dev libyaml-dev libsqlite3-dev libsqlite3-0 sqlite3 libxml2-dev libxslt1-dev python-software-properties libffi-dev libgdm-dev libncurses5-dev automake autoconf libtool bison postgresql postgresql-contrib libpq-dev pgadmin3 libc6-dev nodejs -y
-									
-									apt install ruby
-						elif exists yum; then 
-									yum install ruby
-						elif exists brew; then
-							brew install ruby
-							export PATH=/usr/local/opt/ruby/bin:$PATH
-						else
-									echo "Couldn't find a compatible method to install Ruby for your system"
-									echo "Please download Ruby from"
-									echo https://www.ruby-lang.org/en/downloads/
-						fi
-				fi
-				break
-				;;
-				No )
-				echo "No selected"
-				exit
-				;;
-esac
+	case $yn in
+		Yes ) 
+		echo "yes selected"
+		if exists ruby; then
+				echo "Ruby installed already"
+		else
+			if exists apt; then
+				apt update -y
+				sudo apt-get --ignore-missing install build-essential git-core curl openssl libssl-dev libcurl4-openssl-dev zlib1g zlib1g-dev libreadline-dev libreadline6 libreadline6-dev libyaml-dev libsqlite3-dev libsqlite3-0 sqlite3 libxml2-dev libxslt1-dev python-software-properties libffi-dev libgdm-dev libncurses5-dev automake autoconf libtool bison postgresql postgresql-contrib libpq-dev pgadmin3 libc6-dev nodejs -y 
+				apt install ruby
+			elif exists yum; then 
+						yum install ruby
+			elif exists brew; then
+				brew install ruby
+				export PATH=/usr/local/opt/ruby/bin:$PATH
+			else
+				echo "Couldn't find a compatible method to install Ruby for your system"
+				echo "Please download Ruby from"
+				echo https://www.ruby-lang.org/en/downloads/
+			fi
+		fi
+		break
+		;;
+		No )
+		echo "No selected"
+		exit
+		;;
+	esac
 done
 }
 
 INSTALLRUBY() {
 if [[ "$uname" == "Darwin" ]]; then
-echo "We need to install some required files before you can run this script properly (Mac)"
-  				RUBYINSTALLER
+	echo "We need to install some required files before you can run this script properly (Mac)"
+		RUBYINSTALLER
 elif [[ "$uname" == "Linux" ]]; then
-  echo "We need to install some required files before you can run this script properly (Linux)"
-				RUBYINSTALLER
+  	echo "We need to install some required files before you can run this script properly (Linux)"
+		RUBYINSTALLER
 elif [[ "$uname"] == *"MING"* ]]; then
   echo "We need to install some required files before you can run this script properly (Windows)"
 	    RUBYINSTALLER
 else
   echo "We need to install some required files before you can run this script properly (Windows)"
-    RUBYINSTALLER
+		RUBYINSTALLER
 fi
 }
 
 INSTALLBREW() {
 echo "Do you wish to install HomeBrew?"
 select yn in "Yes" "No"; do
-case $yn in
-				Yes ) 
-				echo "yes selected"
-				if exists brew; then
-						echo "HomeBrew installed already"
-				else
-						if exists ruby; then
-									ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
-	        brew doctor
-						else
-									echo "Ruby must first be installed is it?"
-									echo "If ruby is installed and you are still having issues installing HomeBrew (Mac) please go to"
-									echo https://docs.brew.sh/Installation.html
-						fi
-				fi
-				break
-				;;
-				No )
-				echo "No selected"
-				exit
-				;;
-esac
+	case $yn in
+		Yes ) 
+		echo "yes selected"
+		if exists brew; then
+			echo "HomeBrew installed already"
+		else
+			if exists ruby;then
+				ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
+				brew doctor
+			else
+				echo "Ruby must first be installed is it?"
+				echo "If ruby is installed and you are still having issues installing HomeBrew (Mac) please go to"
+				echo https://docs.brew.sh/Installation.html
+			fi
+		fi
+		break
+		;;
+		No )
+		echo "No selected"
+		exit 
+		;;
+	esac
 done
 }
 
 INSTALLGITCLI() {
 if [ "$uname" == "Darwin" ]; then
-			echo "Installing Git CLI for Mac ($uname)"
-			INSTALLBREW
-			if exists brew; then
-					brew install git
-			else
-					echo "HomeBrew must be installed to install from this script"
-					echo "You can try to install from"
-					echo https://git-scm.com/downloads
-			fi
+	echo "Installing Git CLI for Mac ($uname)"
+	INSTALLBREW
+	if exists brew; then
+		brew install git
+	else
+		echo "HomeBrew must be installed to install from this script"
+		echo "You can try to install from"
+		echo https://git-scm.com/downloads
+	fi
 elif [ "$uname" == "Linux" ]; then
 			if exists git; then
-						echo "Git is already installed SWEET"
+				echo "Git is already installed SWEET"
 			else
-					echo "Installing Git CLI for Linux ($uname)"
-					if exists apt; then
-							sudo apt-get update
-							sudo apt-get upgrade
-							sudo apt-get install git
-					elif exists yum; then
-							sudo yum upgrade
-							sudo yum install git
-					else
-							echo "Could not find a good installer for your system (Linux), please install the git CLI from hand"
-							echo https://git-scm.com/downloads
-					fi
+				echo "Installing Git CLI for Linux ($uname)"
+				if exists apt; then
+					sudo apt-get update
+					sudo apt-get upgrade
+					sudo apt-get install git
+				elif exists yum; then
+					sudo yum upgrade
+					sudo yum install git
+				else
+					echo "Could not find a good installer for your system (Linux), please install the git CLI from hand"
+					echo https://git-scm.com/downloads
+				fi
 			fi
 elif [[ "$uname" == *"MING"* ]]; then
 						echo "Download for the installer (32-bit Windows) should start automatically"
